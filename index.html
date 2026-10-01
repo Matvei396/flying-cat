@@ -10,12 +10,13 @@ body{background:#1a1a2e;font-family:sans-serif;color:#fff;overflow:hidden;touch-
 #startMenu{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e,#2a2a4e);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:2000;padding:20px}
 #startMenu.hidden{display:none}
 .menu-title{font-size:clamp(32px,8vw,72px);font-weight:bold;background:linear-gradient(135deg,#ffd700,#ff6b9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:20px;text-align:center}
-.menu-subtitle{font-size:clamp(14px,3vw,20px);color:#aaa;margin-bottom:40px;text-align:center}
-.menu-buttons{display:flex;flex-direction:column;gap:12px;width:100%;max-width:300px}
-.menu-btn{padding:16px;font-size:18px;font-weight:bold;border:none;border-radius:12px;cursor:pointer}
+.menu-subtitle{font-size:clamp(14px,3vw,20px);color:#aaa;margin-bottom:30px;text-align:center}
+.menu-buttons{display:flex;flex-direction:column;gap:10px;width:100%;max-width:300px}
+.menu-btn{padding:14px;font-size:18px;font-weight:bold;border:none;border-radius:12px;cursor:pointer}
 .menu-btn.play{background:linear-gradient(135deg,#ffd700,#ffb800);color:#000}
-.menu-btn.skins{background:linear-gradient(135deg,#ff6b9d,#ff4081);color:#fff}
-.menu-btn.achievements{background:linear-gradient(135deg,#9c27b0,#673ab7);color:#fff}
+.menu-btn.levels{background:linear-gradient(135deg,#ff6b9d,#ff4081);color:#fff}
+.menu-btn.skins{background:linear-gradient(135deg,#9c27b0,#673ab7);color:#fff}
+.menu-btn.achievements{background:linear-gradient(135deg,#00bcd4,#0097a7);color:#fff}
 .menu-btn.leaderboard{background:linear-gradient(135deg,#4169e1,#1e90ff);color:#fff}
 .nickname-container{position:absolute;bottom:30px;left:20px;right:20px}
 .nickname-label{font-size:14px;color:#aaa;margin-bottom:8px}
@@ -38,7 +39,8 @@ canvas{display:block;background:linear-gradient(#87ceeb,#c9e7ff);width:100%;heig
 .game-over-title{font-size:clamp(40px,10vw,70px);font-weight:bold;margin-bottom:20px;text-align:center}
 .game-over-title.win{color:#ffd700}
 .game-over-title.lose{color:#ff4444}
-.game-over-stats{font-size:18px;color:#fff;margin-bottom:30px;text-align:center}
+.game-over-stats{font-size:18px;color:#fff;margin-bottom:20px;text-align:center}
+.game-over-reward{font-size:24px;color:#ffd700;margin-bottom:30px;text-align:center;font-weight:bold}
 .game-over-buttons{display:flex;flex-direction:column;gap:12px;width:100%;max-width:300px}
 .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:1000;justify-content:center;align-items:center;padding:20px}
 .modal-overlay.active{display:flex}
@@ -47,6 +49,16 @@ canvas{display:block;background:linear-gradient(#87ceeb,#c9e7ff);width:100%;heig
 .modal input{width:100%;padding:12px;font-size:16px;background:#1a1a2e;border:2px solid #555;border-radius:6px;color:#fff;margin-bottom:15px}
 .modal button{padding:12px 20px;font-size:16px;background:#ffd700;color:#000;border:none;border-radius:6px;font-weight:bold;margin:5px}
 .modal button.cancel{background:#555;color:#fff}
+.levels-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.level-card{background:#1a1a2e;border:2px solid #444;border-radius:10px;padding:15px;text-align:center;cursor:pointer;position:relative}
+.level-card:hover{border-color:#ffd700}
+.level-card.completed{border-color:#2ecc71;background:#1a3a2e}
+.level-card.locked{opacity:0.5;cursor:not-allowed}
+.level-card.locked::after{content:'🔒';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:40px}
+.level-icon{font-size:36px;margin-bottom:8px}
+.level-name{font-weight:bold;font-size:14px;margin-bottom:4px}
+.level-desc{font-size:11px;color:#aaa;margin-bottom:4px}
+.level-reward{font-size:12px;color:#ffd700;font-weight:bold}
 .skins-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
 .skin-card{background:#1a1a2e;border:2px solid #444;border-radius:8px;padding:8px;text-align:center}
 .skin-card.selected{border-color:#ffd700;background:#3a3a4e}
@@ -61,25 +73,33 @@ canvas{display:block;background:linear-gradient(#87ceeb,#c9e7ff);width:100%;heig
 .achievement-title{font-weight:bold;color:#fff;margin-bottom:4px}
 .achievement-desc{font-size:12px;color:#aaa}
 .achievement-item.locked .achievement-title{color:#666}
-.achievement-item.locked .achievement-desc{color:#444}
 .admin-panel{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1a1a2e;border:3px solid #ff00ff;border-radius:12px;padding:20px;z-index:1001;width:90%;max-width:350px}
 .admin-panel.active{display:block}
 .admin-btn{display:block;width:100%;padding:12px;margin:8px 0;font-size:14px;background:#2a2a3e;color:#fff;border:2px solid #ff00ff;border-radius:6px}
 .admin-close{background:#c0392b;border-color:#e74c3c}
 .dev-badge{display:none;position:fixed;top:10px;left:10px;background:linear-gradient(135deg,#ff00ff,#00ffff);color:#000;font-weight:bold;font-size:12px;padding:6px 12px;border-radius:12px;z-index:999}
 .dev-badge.active{display:block}
+.wall-menu{background:rgba(0,0,0,0.9);border:3px solid #ffd700;border-radius:12px;padding:20px;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1100;min-width:280px;text-align:center}
+.wall-menu h3{color:#ffd700;margin-bottom:15px;font-size:18px}
+.wall-menu p{color:#fff;margin-bottom:15px;font-size:14px}
+.wall-menu-buttons{display:flex;gap:10px;justify-content:center}
+.wall-menu-buttons button{padding:10px 20px;font-size:14px;border:none;border-radius:6px;cursor:pointer;font-weight:bold}
+.wall-menu-buttons .delete-btn{background:#c0392b;color:#fff}
+.wall-menu-buttons .cancel-btn{background:#555;color:#fff}
+#restartBtn{position:fixed;top:10px;right:10px;width:50px;height:50px;border-radius:50%;background:rgba(255,0,0,0.7);border:2px solid #ff4444;color:#fff;font-size:24px;display:none;justify-content:center;align-items:center;z-index:100}
+#restartBtn.active{display:flex}
 </style>
 </head>
 <body>
 
 <div id="startMenu">
-<div class="menu-title">🐱 ЛЕТАЮЩАЯ КОШКА </div>
+<div class="menu-title">🐱 ЛЕТАЮЩАЯ КОШКА 🐟</div>
 <div class="menu-subtitle">Собирай рыбок, расти, побеждай собак!</div>
 <div class="menu-buttons">
-<button class="menu-btn play" id="btnPlay">▶ ИГРАТЬ</button>
+<button class="menu-btn levels" id="btnLevels">🎮 УРОВНИ</button>
 <button class="menu-btn skins" id="btnSkinsMenu">👕 СКИНЫ</button>
 <button class="menu-btn achievements" id="btnAchievementsMenu">🏆 ДОСТИЖЕНИЯ</button>
-<button class="menu-btn leaderboard" id="btnLeaderboard"> ЛИДЕРБОРД</button>
+<button class="menu-btn leaderboard" id="btnLeaderboard">📊 ЛИДЕРБОРД</button>
 </div>
 <div class="nickname-container">
 <div class="nickname-label">Твой ник:</div>
@@ -94,16 +114,23 @@ canvas{display:block;background:linear-gradient(#87ceeb,#c9e7ff);width:100%;heig
 <div id="joystick"><div id="joystickKnob"></div></div>
 <div class="action-buttons" id="actionButtons">
 <div class="action-btn" id="btnSkins">👕</div>
-<div class="action-btn" id="btnEndings"></div>
+<div class="action-btn" id="btnEndings">🏆</div>
 </div>
+<button id="restartBtn">🔄</button>
 </div>
 
 <div id="gameOverScreen">
 <div class="game-over-title" id="gameOverTitle">ПОБЕДА!</div>
 <div class="game-over-stats" id="gameOverStats"></div>
-<div class="game-over-buttons">
-<button class="menu-btn play" id="btnRestart">🔄 ИГРАТЬ СНОВА</button>
-<button class="menu-btn leaderboard" id="btnToMenu"> В ГЛАВНОЕ МЕНЮ</button>
+<div class="game-over-reward" id="gameOverReward"></div>
+<div class="game-over-buttons" id="gameOverButtons"></div>
+</div>
+
+<div class="modal-overlay" id="levelsModal">
+<div class="modal">
+<h2> ВЫБОР УРОВНЯ</h2>
+<div class="levels-grid" id="levelsGrid"></div>
+<button id="closeLevels" style="width:100%">Закрыть</button>
 </div>
 </div>
 
@@ -121,7 +148,7 @@ canvas{display:block;background:linear-gradient(#87ceeb,#c9e7ff);width:100%;heig
 <div class="modal-overlay" id="skinModal">
 <div class="modal">
 <h2>👕 Магазин Скинов</h2>
-<div style="text-align:center;color:#ffd700;font-weight:bold;margin-bottom:15px">Баланс: <span id="shopBalance">0</span> 🪙</div>
+<div style="text-align:center;color:#ffd700;font-weight:bold;margin-bottom:15px">Баланс: <span id="shopBalance">0</span> </div>
 <div class="skins-grid" id="skinsGrid"></div>
 <button id="promoBtn" style="width:100%;background:#3498db;color:#fff;margin-bottom:10px">🎁 Промокод</button>
 <button id="closeSkinShop" style="width:100%">Закрыть</button>
@@ -162,12 +189,21 @@ canvas{display:block;background:linear-gradient(#87ceeb,#c9e7ff);width:100%;heig
 <button class="admin-btn" id="btnAddMoney">💰 +100</button>
 <button class="admin-btn" id="btnAddWeight">⚖ +50 кг</button>
 <button class="admin-btn" id="btnBreakWalls">💥 Стены</button>
-<button class="admin-btn" id="btnKillDogs">🐕 Собаки</button>
+<button class="admin-btn" id="btnKillDogs"> Собаки</button>
 <button class="admin-btn" id="btnWin">🏆 Победа</button>
 <button class="admin-btn admin-close" id="btnCloseAdmin">Закрыть</button>
 </div>
 
 <div class="dev-badge" id="devBadge">👑 DEV</div>
+
+<div class="wall-menu" id="wallMenu" style="display:none">
+<h3 id="wallMenuTitle">Удалить стену?</h3>
+<p id="wallMenuText"></p>
+<div class="wall-menu-buttons">
+<button class="delete-btn" id="wallDeleteBtn">Удалить</button>
+<button class="cancel-btn" id="wallCancelBtn">Отмена</button>
+</div>
+</div>
 
 <script>
 const canvas = document.getElementById('game');
@@ -180,8 +216,9 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
-const LEADERBOARD_KEY = 'cat_leaderboard_v4';
+const LEADERBOARD_KEY = 'cat_leaderboard_v7';
 const NICKNAME_KEY = 'cat_nickname';
+const LEVELS_KEY = 'cat_levels_completed';
 let currentNickname = localStorage.getItem(NICKNAME_KEY) || '';
 document.getElementById('nicknameInput').value = currentNickname;
 
@@ -198,26 +235,55 @@ function saveLeaderboard(lb) {
   localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(lb));
 }
 
-function addToLeaderboard(name, weight, isWin) {
+function addToLeaderboard(name, weight, isWin, level) {
   const lb = getLeaderboard();
   lb.push({
     name: name || 'Игрок',
     weight: Math.round(weight),
     win: isWin,
+    level: level || 1,
     date: new Date().toLocaleDateString('ru-RU')
   });
   lb.sort(function(a, b) { return b.weight - a.weight; });
   saveLeaderboard(lb.slice(0, 10));
 }
 
-const ENDINGS = {
-  death: { id: 'death', title: 'Смерть', desc: 'Собаки победили', icon: '💀', unlocked: false },
-  normal: { id: 'normal', title: 'Победитель', desc: 'Пробила все стены', icon: '🏆', unlocked: false },
-  admin: { id: 'admin', title: 'Читер', desc: 'Использовала админку', icon: '🛠', unlocked: false },
-  noFood: { id: 'noFood', title: 'Диетолог', desc: 'Победила без рыбок', icon: '🥗', unlocked: false }
+function getCompletedLevels() {
+  return JSON.parse(localStorage.getItem(LEVELS_KEY) || '[]');
+}
+
+function markLevelCompleted(levelId) {
+  const completed = getCompletedLevels();
+  if (completed.indexOf(levelId) === -1) {
+    completed.push(levelId);
+    localStorage.setItem(LEVELS_KEY, JSON.stringify(completed));
+  }
+}
+
+function isLevelUnlocked(levelId) {
+  if (levelId === 1) return true;
+  const completed = getCompletedLevels();
+  return completed.indexOf(levelId - 1) !== -1;
+}
+
+const LEVEL_REWARDS = {
+  1: 50,
+  2: 100,
+  3: 150,
+  4: 200,
+  5: 300
 };
 
-const ENDINGS_KEY = 'cat_endings_v4';
+const ENDINGS = {
+  death: { id: 'death', title: 'Смерть', desc: 'Собаки победили', icon: '💀', unlocked: false },
+  level1: { id: 'level1', title: 'Новичок', desc: 'Прошла уровень 1', icon: '🥉', unlocked: false },
+  level2: { id: 'level2', title: 'Любитель', desc: 'Прошла уровень 2', icon: '🥈', unlocked: false },
+  level3: { id: 'level3', title: 'Профи', desc: 'Прошла уровень 3', icon: '🥇', unlocked: false },
+  level4: { id: 'level4', title: 'Мастер', desc: 'Прошла уровень 4', icon: '', unlocked: false },
+  level5: { id: 'level5', title: 'Легенда', desc: 'Прошла уровень 5', icon: '🏆', unlocked: false }
+};
+
+const ENDINGS_KEY = 'cat_endings_v7';
 
 function loadEndings() {
   const saved = localStorage.getItem(ENDINGS_KEY);
@@ -246,16 +312,135 @@ function unlockEnding(id) {
 
 loadEndings();
 
-let gameStarted = false;
-let currentEnding = null;
-
-document.getElementById('btnPlay').addEventListener('click', function() {
-  if (!currentNickname) {
-    currentNickname = 'Игрок';
-    localStorage.setItem(NICKNAME_KEY, currentNickname);
+const LEVELS = [
+  {
+    id: 1,
+    name: 'Лёгкий',
+    icon: '🟢',
+    desc: '2 стены: 30, 50 кг',
+    fishes: 15,
+    wetFood: 0,
+    saws: 0,
+    coins: 10,
+    dogs: 2,
+    walls: [
+      { need: 30, color: '#8B4513' },
+      { need: 50, color: '#666' }
+    ]
+  },
+  {
+    id: 2,
+    name: 'Средний',
+    icon: '🟡',
+    desc: '3 стены + пилы + корм',
+    fishes: 18,
+    wetFood: 5,
+    saws: 3,
+    coins: 12,
+    dogs: 3,
+    walls: [
+      { need: 50, color: '#8B4513' },
+      { need: 80, color: '#666' },
+      { need: 100, color: '#222' }
+    ]
+  },
+  {
+    id: 3,
+    name: 'Сложный',
+    icon: '🟠',
+    desc: '3 стены + больше пил',
+    fishes: 22,
+    wetFood: 7,
+    saws: 5,
+    coins: 15,
+    dogs: 4,
+    walls: [
+      { need: 70, color: '#8B4513' },
+      { need: 110, color: '#666' },
+      { need: 140, color: '#222' }
+    ]
+  },
+  {
+    id: 4,
+    name: 'Эксперт',
+    icon: '',
+    desc: '4 стены + много пил',
+    fishes: 28,
+    wetFood: 9,
+    saws: 7,
+    coins: 18,
+    dogs: 5,
+    walls: [
+      { need: 80, color: '#8B4513' },
+      { need: 120, color: '#666' },
+      { need: 160, color: '#222' },
+      { need: 200, color: '#000' }
+    ]
+  },
+  {
+    id: 5,
+    name: 'Невозможный',
+    icon: '⚫',
+    desc: '5 стен + максимум пил',
+    fishes: 35,
+    wetFood: 12,
+    saws: 10,
+    coins: 20,
+    dogs: 6,
+    walls: [
+      { need: 100, color: '#8B4513' },
+      { need: 150, color: '#666' },
+      { need: 200, color: '#222' },
+      { need: 250, color: '#000' },
+      { need: 300, color: '#330000' }
+    ]
   }
-  startCountdown();
+];
+
+let currentLevel = 1;
+let gameStarted = false;
+let selectedWall = null;
+
+document.getElementById('btnLevels').addEventListener('click', function() {
+  renderLevels();
+  document.getElementById('levelsModal').classList.add('active');
 });
+
+document.getElementById('closeLevels').addEventListener('click', function() {
+  document.getElementById('levelsModal').classList.remove('active');
+});
+
+function renderLevels() {
+  const grid = document.getElementById('levelsGrid');
+  const completed = getCompletedLevels();
+  grid.innerHTML = '';
+  
+  for (let i = 0; i < LEVELS.length; i++) {
+    const level = LEVELS[i];
+    const isCompleted = completed.indexOf(level.id) !== -1;
+    const isUnlocked = isLevelUnlocked(level.id);
+    const reward = LEVEL_REWARDS[level.id];
+    
+    const card = document.createElement('div');
+    card.className = 'level-card';
+    if (isCompleted) card.className += ' completed';
+    if (!isUnlocked) card.className += ' locked';
+    
+    card.innerHTML = '<div class="level-icon">' + level.icon + '</div><div class="level-name">' + level.name + '</div><div class="level-desc">' + level.desc + '</div><div class="level-reward"> ' + reward + '</div>' + (isCompleted ? '<div style="color:#2ecc71;font-size:11px;margin-top:4px">✅ Пройден</div>' : '');
+    
+    if (isUnlocked) {
+      card.onclick = (function(lvl) {
+        return function() {
+          currentLevel = lvl.id;
+          document.getElementById('levelsModal').classList.remove('active');
+          startCountdown();
+        };
+      })(level);
+    }
+    
+    grid.appendChild(card);
+  }
+}
 
 document.getElementById('btnSkinsMenu').addEventListener('click', function() {
   document.getElementById('skinModal').classList.add('active');
@@ -307,7 +492,7 @@ function renderLeaderboard() {
   for (let i = 0; i < lb.length; i++) {
     const entry = lb[i];
     const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1);
-    html += '<tr><td style="padding:8px;border-bottom:1px solid #333">' + medal + '</td><td style="padding:8px;border-bottom:1px solid #333">' + entry.name + '</td><td style="padding:8px;border-bottom:1px solid #333">' + entry.weight + 'кг</td><td style="padding:8px;border-bottom:1px solid #333">' + (entry.win ? '✅' : '❌') + '</td></tr>';
+    html += '<tr><td style="padding:8px;border-bottom:1px solid #333">' + medal + '</td><td style="padding:8px;border-bottom:1px solid #333">' + entry.name + '</td><td style="padding:8px;border-bottom:1px solid #333">' + entry.weight + 'кг</td><td style="padding:8px;border-bottom:1px solid #333">Ур.' + (entry.level || 1) + '</td><td style="padding:8px;border-bottom:1px solid #333">' + (entry.win ? '✅' : '') + '</td></tr>';
   }
   html += '</table>';
   content.innerHTML = html;
@@ -337,6 +522,7 @@ function startCountdown() {
       gameStarted = true;
       document.getElementById('joystick').classList.add('active');
       document.getElementById('actionButtons').classList.add('active');
+      document.getElementById('restartBtn').classList.add('active');
       initGame();
     }
   }, 1000);
@@ -346,33 +532,107 @@ function showGameOver(isWin) {
   gameStarted = false;
   document.getElementById('joystick').classList.remove('active');
   document.getElementById('actionButtons').classList.remove('active');
+  document.getElementById('restartBtn').classList.remove('active');
   
   const title = document.getElementById('gameOverTitle');
   const stats = document.getElementById('gameOverStats');
+  const reward = document.getElementById('gameOverReward');
+  const buttons = document.getElementById('gameOverButtons');
+  
+  buttons.innerHTML = '';
   
   if (isWin) {
     title.textContent = '🏆 ПОБЕДА! 🏆';
     title.className = 'game-over-title win';
+    markLevelCompleted(currentLevel);
+    unlockEnding('level' + currentLevel);
+    
+    const rewardAmount = LEVEL_REWARDS[currentLevel];
+    money += rewardAmount;
+    saveSkinData();
+    reward.textContent = '🪙 + ' + rewardAmount + ' монет!';
+    
+    stats.innerHTML = 'Уровень: ' + currentLevel + '<br>Ник: ' + currentNickname + '<br>Вес: ' + Math.round(cat.weight) + ' кг<br>Рыбок: ' + cat.fishes;
+    
+    if (currentLevel < LEVELS.length && isLevelUnlocked(currentLevel + 1)) {
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'menu-btn play';
+      nextBtn.textContent = '➡️ ДАЛЬШЕ (Уровень ' + (currentLevel + 1) + ')';
+      nextBtn.onclick = function() {
+        currentLevel++;
+        document.getElementById('gameOverScreen').classList.remove('active');
+        startCountdown();
+      };
+      buttons.appendChild(nextBtn);
+    }
+    
+    const retryBtn = document.createElement('button');
+    retryBtn.className = 'menu-btn levels';
+    retryBtn.textContent = '🔄 ПРОЙТИ ЗАНОВО';
+    retryBtn.onclick = function() {
+      document.getElementById('gameOverScreen').classList.remove('active');
+      startCountdown();
+    };
+    buttons.appendChild(retryBtn);
+    
+    const menuBtn = document.createElement('button');
+    menuBtn.className = 'menu-btn leaderboard';
+    menuBtn.textContent = '🏠 В МЕНЮ';
+    menuBtn.onclick = function() {
+      document.getElementById('gameOverScreen').classList.remove('active');
+      document.getElementById('gameContainer').classList.remove('active');
+      document.getElementById('startMenu').classList.remove('hidden');
+      gameStarted = false;
+    };
+    buttons.appendChild(menuBtn);
+    
   } else {
     title.textContent = '💀 ПОРАЖЕНИЕ 💀';
     title.className = 'game-over-title lose';
+    unlockEnding('death');
+    reward.textContent = '';
+    
+    stats.innerHTML = 'Уровень: ' + currentLevel + '<br>Ник: ' + currentNickname + '<br>Вес: ' + Math.round(cat.weight) + ' кг<br>Рыбок: ' + cat.fishes;
+    
+    const retryBtn = document.createElement('button');
+    retryBtn.className = 'menu-btn play';
+    retryBtn.textContent = '🔄 ЗАНОВО';
+    retryBtn.onclick = function() {
+      document.getElementById('gameOverScreen').classList.remove('active');
+      startCountdown();
+    };
+    buttons.appendChild(retryBtn);
+    
+    const levelsBtn = document.createElement('button');
+    levelsBtn.className = 'menu-btn levels';
+    levelsBtn.textContent = '🎮 К УРОВНЯМ';
+    levelsBtn.onclick = function() {
+      document.getElementById('gameOverScreen').classList.remove('active');
+      document.getElementById('gameContainer').classList.remove('active');
+      document.getElementById('startMenu').classList.remove('hidden');
+      gameStarted = false;
+    };
+    buttons.appendChild(levelsBtn);
+    
+    const menuBtn = document.createElement('button');
+    menuBtn.className = 'menu-btn leaderboard';
+    menuBtn.textContent = '🏠 В МЕНЮ';
+    menuBtn.onclick = function() {
+      document.getElementById('gameOverScreen').classList.remove('active');
+      document.getElementById('gameContainer').classList.remove('active');
+      document.getElementById('startMenu').classList.remove('hidden');
+      gameStarted = false;
+    };
+    buttons.appendChild(menuBtn);
   }
-  
-  stats.innerHTML = 'Ник: ' + currentNickname + '<br>Вес: ' + Math.round(cat.weight) + ' кг<br>Рыбок: ' + cat.fishes;
   
   document.getElementById('gameOverScreen').classList.add('active');
 }
 
-document.getElementById('btnRestart').addEventListener('click', function() {
-  document.getElementById('gameOverScreen').classList.remove('active');
-  startCountdown();
-});
-
-document.getElementById('btnToMenu').addEventListener('click', function() {
-  document.getElementById('gameOverScreen').classList.remove('active');
-  document.getElementById('gameContainer').classList.remove('active');
-  document.getElementById('startMenu').classList.remove('hidden');
-  gameStarted = false;
+document.getElementById('restartBtn').addEventListener('click', function() {
+  if (confirm('Начать уровень ' + currentLevel + ' заново?')) {
+    startCountdown();
+  }
 });
 
 const joystick = document.getElementById('joystick');
@@ -411,6 +671,42 @@ joystick.addEventListener('touchend', function(e) {
   joystickY = 0;
 });
 
+canvas.addEventListener('click', function(e) {
+  if (!gameStarted || win || death) return;
+  
+  const rect = canvas.getBoundingClientRect();
+  const clickX = e.clientX - rect.left;
+  const clickY = e.clientY - rect.top;
+  
+  for (let i = 0; i < walls.length; i++) {
+    const w = walls[i];
+    if (w.broken) continue;
+    if (clickX >= w.x && clickX <= w.x + w.w && clickY >= w.y && clickY <= w.y + w.h) {
+      selectedWall = w;
+      document.getElementById('wallMenuTitle').textContent = 'Удалить стену #' + w.id + '?';
+      document.getElementById('wallMenuText').textContent = 'Нужно ' + w.need + ' кг, у тебя ' + Math.round(cat.weight) + ' кг';
+      document.getElementById('wallMenu').style.display = 'block';
+      break;
+    }
+  }
+});
+
+document.getElementById('wallDeleteBtn').addEventListener('click', function() {
+  if (selectedWall && cat.weight >= selectedWall.need) {
+    selectedWall.broken = true;
+    spawnParticles(selectedWall.x + selectedWall.w / 2, cat.y, selectedWall.color, 30);
+  } else if (selectedWall) {
+    alert('Недостаточно веса! Нужно ' + selectedWall.need + ' кг');
+  }
+  document.getElementById('wallMenu').style.display = 'none';
+  selectedWall = null;
+});
+
+document.getElementById('wallCancelBtn').addEventListener('click', function() {
+  document.getElementById('wallMenu').style.display = 'none';
+  selectedWall = null;
+});
+
 let isDevMode = false;
 let isImmortal = false;
 const DEV_PASSWORD = 'plm987okn';
@@ -436,7 +732,7 @@ function checkPromo(code) {
     saveSkinData();
     usedPromos.push('500money');
     localStorage.setItem(PROMOS_KEY, JSON.stringify(usedPromos));
-    return { success: true, msg: '+500 монет! 💰' };
+    return { success: true, msg: '+500 монет! ' };
   }
   if (code === '1488монет') {
     if (usedPromos.indexOf('1488монет') !== -1) return { success: false, msg: 'Уже использован!' };
@@ -482,49 +778,96 @@ function getCurrentSkin() {
   return SKINS[0];
 }
 
-let cat, fishes, coins, dogs, walls, particles, win, death;
+let cat, fishes, coins, dogs, walls, particles, win, death, saws, wetFoods;
 let adminUsed = false;
 const DOG_EAT_THRESHOLD = 50;
 
 function initGame() {
+  const level = LEVELS[currentLevel - 1];
+  
   cat = {
     x: canvas.width * 0.1,
     y: canvas.height / 2,
     vx: 0, vy: 0,
     weight: 25, fishes: 0,
-    wingPhase: 0, hurtTimer: 0, dogHits: 0
+    wingPhase: 0, hurtTimer: 0, dogHits: 0, sawCooldown: 0
   };
+  
   fishes = [];
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < level.fishes; i++) {
     fishes.push({
       x: canvas.width * 0.1 + Math.random() * canvas.width * 0.65,
       y: 50 + Math.random() * (canvas.height - 100),
       r: 14, bob: Math.random() * Math.PI * 2, eaten: false
     });
   }
+  
+  wetFoods = [];
+  for (let i = 0; i < level.wetFood; i++) {
+    wetFoods.push({
+      x: canvas.width * 0.1 + Math.random() * canvas.width * 0.65,
+      y: 50 + Math.random() * (canvas.height - 100),
+      r: 16, bob: Math.random() * Math.PI * 2, eaten: false
+    });
+  }
+  
+  saws = [];
+  for (let i = 0; i < level.saws; i++) {
+    saws.push({
+      x: canvas.width * 0.15 + Math.random() * canvas.width * 0.6,
+      y: 50 + Math.random() * (canvas.height - 100),
+      r: 20,
+      angle: 0,
+      speed: (Math.random() > 0.5 ? 1 : -1) * (0.05 + Math.random() * 0.05),
+      vx: (Math.random() - 0.5) * 1.5,
+      vy: (Math.random() - 0.5) * 1.5
+    });
+  }
+  
   coins = [];
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < level.coins; i++) {
     coins.push({
       x: canvas.width * 0.1 + Math.random() * canvas.width * 0.7,
       y: 50 + Math.random() * (canvas.height - 100),
       r: 10, collected: false
     });
   }
-  dogs = [
-    { x: canvas.width * 0.3, y: canvas.height * 0.2, vx: 1.5, vy: 0.8, r: 18, cooldown: 0, dir: 1, phase: 0, alive: true },
-    { x: canvas.width * 0.5, y: canvas.height * 0.7, vx: -1.2, vy: 1.0, r: 20, cooldown: 0, dir: -1, phase: 2, alive: true },
-    { x: canvas.width * 0.2, y: canvas.height * 0.5, vx: 0.9, vy: -1.3, r: 16, cooldown: 0, dir: 1, phase: 4, alive: true }
-  ];
-  walls = [
-    { x: canvas.width * 0.8, y: 0, w: 15, h: canvas.height, need: 50, color: '#8B4513', broken: false, id: 1 },
-    { x: canvas.width * 0.85, y: 0, w: 15, h: canvas.height, need: 100, color: '#666', broken: false, id: 2 },
-    { x: canvas.width * 0.9, y: 0, w: 15, h: canvas.height, need: 150, color: '#222', broken: false, id: 3 }
-  ];
+  
+  dogs = [];
+  for (let i = 0; i < level.dogs; i++) {
+    dogs.push({
+      x: canvas.width * 0.2 + Math.random() * canvas.width * 0.5,
+      y: canvas.height * 0.2 + Math.random() * canvas.height * 0.6,
+      vx: (Math.random() - 0.5) * 2,
+      vy: (Math.random() - 0.5) * 2,
+      r: 16 + Math.random() * 4,
+      cooldown: 0,
+      dir: Math.random() > 0.5 ? 1 : -1,
+      phase: Math.random() * Math.PI * 2,
+      alive: true
+    });
+  }
+  
+  walls = [];
+  const wallStartX = canvas.width * 0.75;
+  const wallSpacing = canvas.width * 0.05;
+  for (let i = 0; i < level.walls.length; i++) {
+    walls.push({
+      x: wallStartX + i * wallSpacing,
+      y: 0,
+      w: 15,
+      h: canvas.height,
+      need: level.walls[i].need,
+      color: level.walls[i].color,
+      broken: false,
+      id: i + 1
+    });
+  }
+  
   particles = [];
   win = false;
   death = false;
   adminUsed = false;
-  currentEnding = null;
 }
 
 function getCatRadius() {
@@ -565,6 +908,7 @@ function update() {
   
   cat.wingPhase += 0.3;
   if (cat.hurtTimer > 0) cat.hurtTimer--;
+  if (cat.sawCooldown > 0) cat.sawCooldown--;
 
   for (let i = 0; i < fishes.length; i++) {
     const f = fishes[i];
@@ -575,6 +919,39 @@ function update() {
       cat.fishes++;
       cat.weight += 5;
       spawnParticles(f.x, f.y, '#ffcc33', 10);
+    }
+  }
+
+  for (let i = 0; i < wetFoods.length; i++) {
+    const f = wetFoods[i];
+    if (f.eaten) continue;
+    f.bob += 0.08;
+    if (Math.hypot(f.x - cat.x, f.y - cat.y) < catR + f.r) {
+      f.eaten = true;
+      cat.weight += 15;
+      spawnParticles(f.x, f.y, '#ff6600', 12);
+    }
+  }
+
+  for (let i = 0; i < saws.length; i++) {
+    const s = saws[i];
+    s.angle += s.speed;
+    s.x += s.vx;
+    s.y += s.vy;
+    if (s.x < s.r || s.x > canvas.width * 0.75 - s.r) s.vx *= -1;
+    if (s.y < s.r || s.y > canvas.height - s.r) s.vy *= -1;
+    
+    if (cat.sawCooldown <= 0 && Math.hypot(s.x - cat.x, s.y - cat.y) < catR + s.r) {
+      cat.weight = Math.max(10, cat.weight - 10);
+      cat.sawCooldown = 60;
+      cat.hurtTimer = 20;
+      spawnParticles(cat.x, cat.y, '#ff0000', 15);
+      if (cat.weight <= 10) {
+        death = true;
+        unlockEnding('death');
+        addToLeaderboard(currentNickname, cat.weight, false, currentLevel);
+        setTimeout(function() { showGameOver(false); }, 1000);
+      }
     }
   }
 
@@ -637,8 +1014,7 @@ function update() {
           if (cat.dogHits >= 5) {
             death = true;
             unlockEnding('death');
-            addToLeaderboard(currentNickname, cat.weight, false);
-            currentEnding = 'death';
+            addToLeaderboard(currentNickname, cat.weight, false, currentLevel);
             setTimeout(function() { showGameOver(false); }, 1500);
           }
         }
@@ -669,17 +1045,7 @@ function update() {
   
   if (allBroken && cat.x > canvas.width - 20) {
     win = true;
-    if (adminUsed) {
-      unlockEnding('admin');
-      currentEnding = 'admin';
-    } else if (cat.fishes === 0) {
-      unlockEnding('noFood');
-      currentEnding = 'noFood';
-    } else {
-      unlockEnding('normal');
-      currentEnding = 'normal';
-    }
-    addToLeaderboard(currentNickname, cat.weight, true);
+    addToLeaderboard(currentNickname, cat.weight, true, currentLevel);
     setTimeout(function() { showGameOver(true); }, 1000);
   }
 
@@ -831,6 +1197,46 @@ function drawFish(f) {
   ctx.fill();
 }
 
+function drawWetFood(f) {
+  const fy = f.y + Math.sin(f.bob) * 3;
+  ctx.fillStyle = '#8B4513';
+  ctx.fillRect(f.x - f.r, fy - f.r * 0.8, f.r * 2, f.r * 1.6);
+  ctx.fillStyle = '#D2691E';
+  ctx.fillRect(f.x - f.r, fy - f.r * 0.8, f.r * 2, f.r * 0.4);
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 10px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('🥫', f.x, fy + 4);
+  ctx.textAlign = 'left';
+}
+
+function drawSaw(s) {
+  ctx.save();
+  ctx.translate(s.x, s.y);
+  ctx.rotate(s.angle);
+  ctx.fillStyle = '#888';
+  ctx.beginPath();
+  for (let i = 0; i < 8; i++) {
+    const angle = (i / 8) * Math.PI * 2;
+    const x = Math.cos(angle) * s.r;
+    const y = Math.sin(angle) * s.r;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+    const angle2 = angle + Math.PI / 8;
+    ctx.lineTo(Math.cos(angle2) * s.r * 0.7, Math.sin(angle2) * s.r * 0.7);
+  }
+  ctx.closePath();
+  ctx.fill();
+  ctx.strokeStyle = '#555';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.fillStyle = '#333';
+  ctx.beginPath();
+  ctx.arc(0, 0, s.r * 0.3, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
 function drawCoin(c) {
   ctx.fillStyle = '#ffd700';
   ctx.beginPath();
@@ -874,6 +1280,12 @@ function draw() {
   for (let i = 0; i < fishes.length; i++) {
     if (!fishes[i].eaten) drawFish(fishes[i]);
   }
+  for (let i = 0; i < wetFoods.length; i++) {
+    if (!wetFoods[i].eaten) drawWetFood(wetFoods[i]);
+  }
+  for (let i = 0; i < saws.length; i++) {
+    drawSaw(saws[i]);
+  }
   for (let i = 0; i < coins.length; i++) {
     if (!coins[i].collected) drawCoin(coins[i]);
   }
@@ -885,6 +1297,11 @@ function draw() {
     if (w.broken) continue;
     ctx.fillStyle = w.color;
     ctx.fillRect(w.x, w.y, w.w, w.h);
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 12px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(w.need + 'кг', w.x + w.w / 2, 20);
+    ctx.textAlign = 'left';
   }
   
   drawCat();
@@ -898,13 +1315,16 @@ function draw() {
   ctx.globalAlpha = 1;
 
   ctx.fillStyle = 'rgba(0,0,0,0.5)';
-  ctx.fillRect(10, 10, 200, 80);
+  ctx.fillRect(10, 10, 220, 90);
   ctx.fillStyle = '#fff';
   ctx.font = 'bold 14px sans-serif';
   ctx.fillText('👤 ' + currentNickname, 20, 30);
   ctx.fillText('🐟 ' + cat.fishes + ' | ⚖ ' + cat.weight.toFixed(0) + 'кг', 20, 50);
   ctx.fillStyle = '#ffd700';
   ctx.fillText('🪙 ' + money, 20, 70);
+  ctx.fillStyle = '#aaa';
+  ctx.font = '12px sans-serif';
+  ctx.fillText('Уровень: ' + currentLevel, 20, 88);
 }
 
 document.getElementById('btnSkins').addEventListener('click', function() {
@@ -994,9 +1414,7 @@ document.getElementById('btnKillDogs').addEventListener('click', function() {
 
 document.getElementById('btnWin').addEventListener('click', function() {
   win = true;
-  unlockEnding('admin');
-  currentEnding = 'admin';
-  addToLeaderboard(currentNickname, cat.weight, true);
+  addToLeaderboard(currentNickname, cat.weight, true, currentLevel);
   showGameOver(true);
 });
 
