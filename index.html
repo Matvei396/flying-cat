@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Летающая Кошка</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  body {
+    background: #1a1a2e;
+    font-family: sans-serif;
+    color: #fff;
+    overflow: hidden;
+    touch-action: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* === СТАРТОВОЕ МЕНЮ === */
+  #startMenu {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, #1a1a2e 0%, #2a2a4e 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    padding: 20px;
+  }
+  #startMenu.hidden { display: none; }
+  
+  .menu-title {
+    font-size: clamp(32px, 8vw, 72px);
+    font-weight: bold;
+    background: linear-gradient(135deg, #ffd700, #ff6b9d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px;
+    animation: titleFloat 3s ease-in-out infinite;
+    text-align: center;
+  }
+  @keyframes titleFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  .menu-subtitle {
+    font-size: clamp(14px, 3vw, 24px);
+    color: #aaa;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+  
+  .menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .menu-btn {
+    padding: 18px;
+    font-size: clamp(18px, 4vw, 22px);
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  }
+  .menu-btn:active {
+    transform: scale(0.95);
+  }
+  .menu-btn.play {
+    background: linear-gradient(135deg, #ffd700, #ffb800);
+    color: #000;
+  }
+  .menu-btn.leaderboard {
+    background: linear-gradient(135deg, #4169e1, #1e90ff);
+    color: #fff;
+  }
+  
+  .nickname-container {
+    position: absolute;
+    bottom: 30px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .nickname-label {
+    font-size: 14px;
+    color: #aaa;
+  }
+  .nickname-input {
+    padding: 12px 16px;
+    font-size: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 2px solid #ffd700;
+    border-radius: 8px;
+    color: #fff;
+    width: 100%;
+  }
+  
+  /* === ОБРАТНЫЙ ОТСЧЁТ === */
+  #countdown {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1999;
+  }
+  #countdown.active { display: flex; }
+  
+  .countdown-number {
+    font-size: clamp(100px, 30vw, 200px);
+    font-weight: bold;
+    color: #ffd700;
+    text-shadow: 0 0 40px #ffd700;
+    animation: countPulse 1s ease-out;
+  }
+  .countdown-number.go {
+    color: #00ff00;
+    text-shadow: 0 0 40px #00ff00;
+  }
+  @keyframes countPulse {
+    0% { transform: scale(0.5); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  
+  /* === ЛИДЕРБОРД === */
+  .leaderboard-panel {
+    display: none;
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1a1a2e;
+    border: 3px solid #ffd700;
+    border-radius: 12px;
+    padding: 20px;
+    z-index: 2001;
+    width: 90%;
+    max-width: 450px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .leaderboard-panel.active { display: block; }
+  .leaderboard-panel h2 {
+    margin: 0 0 20px;
+    color: #ffd700;
+    text-align: center;
+    font-size: 24px;
+  }
+  .lb-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .lb-table th {
+    background: #2a2a3e;
+    padding: 8px;
+    text-align: left;
+    color: #ffd700;
+    border-bottom: 2px solid #ffd700;
+  }
+  .lb-table td {
+    padding: 8px;
+    border-bottom: 1px solid #333;
+  }
+  .lb-table tr:nth-child(1) td { color: #ffd700; font-weight: bold; }
+  .lb-table tr:nth-child(2) td { color: #c0c0c0; }
+  .lb-table tr:nth-child(3) td { color: #cd7f32; }
+  
+  /* === ИГРОВОЙ CANVAS === */
+  #gameContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: none;
+  }
+  #gameContainer.active { display: block; }
+  
+  canvas {
+    display: block;
+    background: linear-gradient(#87ceeb, #c9e7ff);
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* === ВИРТУАЛЬНЫЙ ДЖОЙСТИК === */
+  #joystick {
+    position: fixed;
+    bottom: 80px;
+    left: 80px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    border: 3px solid rgba(255,255,255,0.4);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+  }
+  #joystick.active { display: flex; }
+  
+  #joystickKnob {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255,215,0,0.8);
+    border: 2px solid #ffd700;
+    position: absolute;
+  }
+  
+  /* === КНОПКИ ДЕЙСТВИЙ === */
+  .action-buttons {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+    gap: 10px;
+    z-index: 100;
+  }
+  .action-buttons.active { display: flex; }
+  
+  .action-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.5);
+    border: 2px solid #ffd700;
+    color: #fff;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  .action-btn:active {
+    background: rgba(255,215,0,0.3);
+  }
+  
+  /* === МОДАЛЬНЫЕ ОКНА === */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  .modal-overlay.active { display: flex; }
+  
+  .modal {
+    background: #2a2a3e;
+    border: 3px solid #ffd700;
+    border-radius: 12px;
+    padding: 20px;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal h2 {
+    margin: 0 0 20px;
+    color: #ffd700;
+    text-align: center;
+    font-size: 20px;
+  }
+  .modal input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background: #1a1a2e;
+    border: 2px solid #555;
+    border-radius: 6px;
+    color: #fff;
+    margin-bottom: 15px;
+  }
+  .modal button {
+    padding: 12px 20px;
+    font-size: 16px;
+    background: #ffd700;
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 5px;
+  }
+  .modal button:active {
+    transform: scale(0.95);
+  }
+  .modal button.cancel { background: #555; color: #fff; }
+  
+  .skins-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .skin-card {
+    background: #1a1a2e;
+    border: 2px solid #444;
+    border-radius: 8px;
+    padding: 8px;
+    cursor: pointer;
+    text-align: center;
+  }
+  .skin-card.selected { border-color: #ffd700; background: #3a3a4e; }
+  .skin-icon { font-size: 32px; }
+  .skin-name { font-size: 11px; font-weight: bold; margin-top: 4px; }
+  .skin-price { color: #ffd700; font-size: 10px; }
+  
+  .admin-panel {
+    display: none;
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1a1a2e;
+    border: 3px solid #ff00ff;
+    border-radius: 12px;
+    padding: 20px;
+    z-index: 1001;
+    width: 90%;
+    max-width: 350px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .admin-panel.active { display: block; }
+  .admin-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    font-size: 14px;
+    background: #2a2a3e;
+    color: #fff;
+    border: 2px solid #ff00ff;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .admin-btn:active {
+    background: #ff00ff;
+  }
+  .admin-close { background: #c0392b; border-color: #e74c3c; }
+  
+  .dev-badge {
+    display: none;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: linear-gradient(135deg, #ff00ff, #00ffff);
+    color: #000;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 12px;
+    z-index: 999;
+  }
+  .dev-badge.active { display: block; }
+</style>
+</head>
+<body>
+
+<!-- === СТАРТОВОЕ МЕНЮ === -->
+<div id="startMenu">
+  <div class="menu-title">🐱 ЛЕТАЮЩАЯ КОШКА 🐟</div>
+  <div class="menu-subtitle">Собирай рыбок, расти, побеждай собак!</div>
+  <div class="menu-buttons">
+    <button class="menu-btn play" id="btnPlay">▶ ИГРАТЬ</button>
+    <button class="menu-btn leaderboard" id="btnLeaderboard">🏆 ЛИДЕРБОРД</button>
+  </div>
+  <div class="nickname-container">
+    <div class="nickname-label">Твой ник:</div>
+    <input type="text" class="nickname-input" id="nicknameInput" placeholder="Введи ник..." maxlength="15">
+  </div>
+</div>
+
+<!-- === ОБРАТНЫЙ ОТСЧЁТ === -->
+<div id="countdown">
+  <div class="countdown-number" id="countdownText">3</div>
+</div>
+
+<!-- === ЛИДЕРБОРД === -->
+<div class="leaderboard-panel" id="leaderboardPanel">
+  <h2>🏆 ЛИДЕРБОРД</h2>
+  <div id="leaderboardContent"></div>
+  <button class="menu-btn play" id="btnCloseLeaderboard" style="width: 100%; margin-top: 20px;">Закрыть</button>
+</div>
+
+<!-- === ИГРОВОЙ КОНТЕЙНЕР === -->
+<div id="gameContainer">
+  <canvas id="game"></canvas>
+  
+  <!-- Виртуальный джойстик -->
+  <div id="joystick">
+    <div id="joystickKnob"></div>
+  </div>
+  
+  <!-- Кнопки действий -->
+  <div class="action-buttons" id="actionButtons">
+    <div class="action-btn" id="btnSkins">👕</div>
+    <div class="action-btn" id="btnEndings">🏆</div>
+  </div>
+</div>
+
+<!-- === МОДАЛЬНЫЕ ОКНА === -->
+<div class="modal-overlay" id="passwordModal">
+  <div class="modal">
+    <h2>🔐 Доступ</h2>
+    <input type="password" id="passwordInput" placeholder="Пароль" maxlength="20">
+    <div style="text-align: center;">
+      <button id="passwordOk">OK</button>
+      <button class="cancel" id="passwordCancel">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="skinModal">
+  <div class="modal">
+    <h2>👕 Магазин Скинов</h2>
+    <div style="text-align: center; color: #ffd700; font-weight: bold; margin-bottom: 15px;">
+      Баланс: <span id="shopBalance">0</span> 🪙
+    </div>
+    <div class="skins-grid" id="skinsGrid"></div>
+    <button id="promoBtn" style="width: 100%; background: #3498db; color: #fff; margin-bottom: 10px;">🎁 Промокод</button>
+    <button id="closeSkinShop" style="width: 100%;">Закрыть</button>
+    <button id="openAdminFromShop" style="width: 100%; background: #8e44ad; color: #fff; margin-top: 10px;">🛠 Админка</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="promoModal">
+  <div class="modal">
+    <h2>🎁 Промокод</h2>
+    <input type="text" id="promoInput" placeholder="Код..." maxlength="20">
+    <div style="text-align: center;">
+      <button id="promoOk">Активировать</button>
+      <button class="cancel" id="promoCancel">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<div class="admin-panel" id="adminPanel">
+  <h2 style="color: #ff00ff; text-align: center;">🛠 АДМИНКА</h2>
+  <button class="admin-btn" id="btnImmortal">🛡️ Бессмертие</button>
+  <button class="admin-btn" id="btnAddMoney">💰 +100</button>
+  <button class="admin-btn" id="btnAddWeight">⚖ +50 кг</button>
+  <button class="admin-btn" id="btnBreakWalls">💥 Стены</button>
+  <button class="admin-btn" id="btnKillDogs">🐕 Собаки</button>
+  <button class="admin-btn" id="btnWin">🏆 Победа</button>
+  <button class="admin-btn admin-close" id="btnCloseAdmin">Закрыть</button>
+</div>
+
+<div class="dev-badge" id="devBadge">👑 DEV</div>
+
+<script>
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+/* ========================================
+   НИК И ЛИДЕРБОРД
+   ======================================== */
+const LEADERBOARD_KEY = 'cat_leaderboard_v3';
+const NICKNAME_KEY = 'cat_nickname';
+let currentNickname = localStorage.getItem(NICKNAME_KEY) || '';
+document.getElementById('nicknameInput').value = currentNickname;
+
+document.getElementById('nicknameInput').addEventListener('input', (e) => {
+  currentNickname = e.target.value.trim() || 'Игрок';
+  localStorage.setItem(NICKNAME_KEY, currentNickname);
+});
+
+function getLeaderboard() {
+  return JSON.parse(localStorage.getItem(LEADERBOARD_KEY) || '[]');
+}
+function saveLeaderboard(lb) {
+  localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(lb));
+}
+function addToLeaderboard(name, weight, isWin) {
+  const lb = getLeaderboard();
+  lb.push({ name: name || 'Игрок', weight: Math.round(weight), win: isWin, date: new Date().toLocaleDateString('ru-RU') });
+  lb.sort((a, b) => b.weight - a.weight);
+  saveLeaderboard(lb.slice(0, 10));
+}
+function renderLeaderboard() {
+  const lb = getLeaderboard();
+  const content = document.getElementById('leaderboardContent');
+  if (lb.length === 0) {
+    content.innerHTML = '<div style="text-align: center; color: #666; padding: 30px;">Пока нет рекордов</div>';
+    return;
+  }
+  let html = '<table class="lb-table"><thead><tr><th>#</th><th>Ник</th><th>Вес</th><th>Победа</th></tr></thead><tbody>';
+  lb.forEach((entry, i) => {
+    const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1);
+    html += `<tr><td>${medal}</td><td>${entry.name}</td><td>${entry.weight}кг</td><td>${entry.win ? '✅' : '❌'}</td></tr>`;
+  });
+  html += '</tbody></table>';
+  content.innerHTML = html;
+}
+
+/* ========================================
+   СТАРТОВОЕ МЕНЮ
+   ======================================== */
+let gameStarted = false;
+
+document.getElementById('btnPlay').addEventListener('click', () => {
+  if (!currentNickname) {
+    currentNickname = 'Игрок';
+    localStorage.setItem(NICKNAME_KEY, currentNickname);
+  }
+  startCountdown();
+});
+
+document.getElementById('btnLeaderboard').addEventListener('click', () => {
+  renderLeaderboard();
+  document.getElementById('leaderboardPanel').classList.add('active');
+});
+
+document.getElementById('btnCloseLeaderboard').addEventListener('click', () => {
+  document.getElementById('leaderboardPanel').classList.remove('active');
+});
+
+function startCountdown() {
+  document.getElementById('startMenu').classList.add('hidden');
+  document.getElementById('gameContainer').classList.add('active');
+  const countdownEl = document.getElementById('countdown');
+  const textEl = document.getElementById('countdownText');
+  countdownEl.classList.add('active');
+  
+  let count = 3;
+  textEl.textContent = count;
+  
+  const interval = setInterval(() => {
+    count--;
+    if (count > 0) {
+      textEl.textContent = count;
+    } else if (count === 0) {
+      textEl.textContent = 'GO!';
+      textEl.className = 'countdown-number go';
+    } else {
+      clearInterval(interval);
+      countdownEl.classList.remove('active');
+      gameStarted = true;
+      document.getElementById('joystick').classList.add('active');
+      document.getElementById('actionButtons').classList.add('active');
+      initGame();
+    }
+  }, 1000);
+}
+
+/* ========================================
+   ВИРТУАЛЬНЫЙ ДЖОЙСТИК
+   ======================================== */
+const joystick = document.getElementById('joystick');
+const knob = document.getElementById('joystickKnob');
+let joystickActive = false;
+let joystickX = 0, joystickY = 0;
+
+joystick.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  joystickActive = true;
+});
+
+joystick.addEventListener('touchmove', (e) => {
+  e.preventDefault();
+  if (!joystickActive) return;
+  
+  const rect = joystick.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+  const touch = e.touches[0];
+  
+  let dx = touch.clientX - centerX;
+  let dy = touch.clientY - centerY;
+  const distance = Math.min(Math.hypot(dx, dy), 50);
+  const angle = Math.atan2(dy, dx);
+  
+  dx = Math.cos(angle) * distance;
+  dy = Math.sin(angle) * distance;
+  
+  knob.style.transform = `translate(${dx}px, ${dy}px)`;
+  joystickX = dx / 50;
+  joystickY = dy / 50;
+});
+
+joystick.addEventListener('touchend', (e) => {
+  e.preventDefault();
+  joystickActive = false;
+  knob.style.transform = 'translate(0, 0)';
+  joystickX = 0;
+  joystickY = 0;
+});
+
+/* ========================================
+   ОСНОВНАЯ ИГРА
+   ======================================== */
+let isDevMode = false;
+let isImmortal = false;
+const DEV_PASSWORD = 'plm987okn';
+const ADMIN_PASSWORD = '1488';
+
+const PROMOS_KEY = 'cat_used_promos_v2';
+let usedPromos = JSON.parse(localStorage.getItem(PROMOS_KEY) || '[]');
+
+function checkPromo(code) {
+  code = code.trim().toLowerCase();
+  if (code === 'spider man') {
+    if (usedPromos.includes('spiderman')) return { success: false, msg: 'Уже использован!' };
+    if (!ownedSkins.includes('spiderman')) ownedSkins.push('spiderman');
+    currentSkinId = 'spiderman';
+    saveSkinData();
+    usedPromos.push('spiderman');
+    localStorage.setItem(PROMOS_KEY, JSON.stringify(usedPromos));
+    return { success: true, msg: 'Скин Человек-Паук! 🕷️' };
+  }
+  if (code === '500money') {
+    if (usedPromos.includes('500money')) return { success: false, msg: 'Уже использован!' };
+    money += 500;
+    saveSkinData();
+    usedPromos.push('500money');
+    localStorage.setItem(PROMOS_KEY, JSON.stringify(usedPromos));
+    return { success: true, msg: '+500 монет! 💰' };
+  }
+  if (code === '1488монет') {
+    if (usedPromos.includes('1488монет')) return { success: false, msg: 'Уже использован!' };
+    money += 1488;
+    saveSkinData();
+    usedPromos.push('1488монет');
+    localStorage.setItem(PROMOS_KEY, JSON.stringify(usedPromos));
+    return { success: true, msg: '+1488 монет! 💰' };
+  }
+  return { success: false, msg: 'Неверный код!' };
+}
+
+/* ========================================
+   СКИНЫ ДЛЯ КОШКИ (13 штук)
+   ======================================== */
+const SKINS = [
+  { id: 'default', name: 'Обычная', icon: '🐱', price: 0, color: '#ff9933' },      // Оранжевый кот
+  { id: 'cool', name: 'Крутая', icon: '😎', price: 50, color: '#ff9933' },
+  { id: 'alien', name: 'Пришелец', icon: '👽', price: 100, color: '#9acd32' },
+  { id: 'robot', name: 'Робот', icon: '🤖', price: 200, color: '#778899' },
+  { id: 'pumpkin', name: 'Тыква', icon: '🎃', price: 150, color: '#ff7518' },
+  { id: 'rainbow', name: 'Радуга', icon: '🌈', price: 300, color: 'rainbow' },
+  { id: 'ghost', name: 'Призрак', icon: ' 👻', price: 250, color: '#e0e0ff' },
+  { id: 'santa', name: 'Санта', icon: '🎅', price: 350, color: '#ff9933' },
+  { id: 'hero', name: 'Герой', icon: '🦸', price: 400, color: '#4169e1' },
+  { id: 'fish', name: 'Рыбка', icon: '🐟', price: 180, color: '#87ceeb' },
+  { id: 'diamond', name: 'Алмаз', icon: '💎', price: 500, color: '#b9f2ff' },
+  { id: 'star', name: 'Звёздная', icon: '🌟', price: 450, color: '#fff8dc' },
+  { id: 'spiderman', name: 'Паук', icon: '🕷️', price: 9999, color: '#cc0000' }
+];
+
+let money = parseInt(localStorage.getItem('cat_money') || '0', 10);
+let ownedSkins = JSON.parse(localStorage.getItem('cat_owned_skins') || '["default"]');
+let currentSkinId = localStorage.getItem('cat_current_skin') || 'default';
+
+function saveSkinData() {
+  localStorage.setItem('cat_money', money);
+  localStorage.setItem('cat_owned_skins', JSON.stringify(ownedSkins));
+  localStorage.setItem('cat_current_skin', currentSkinId);
+}
+function getCurrentSkin() {
+  return SKINS.find(s => s.id === currentSkinId) || SKINS[0];
+}
+
+const ENDINGS = {
+  death: { id: 'death', title: 'Смерть', desc: 'Собаки победили', icon: '💀', unlocked: false },
+  normal: { id: 'normal', title: 'Победитель', desc: 'Пробила стены', icon: '🏆', unlocked: false },
+  admin: { id: 'admin', title: 'Читер', desc: 'Использовал админку', icon: '🛠', unlocked: false },
+  noFood: { id: 'noFood', tit
