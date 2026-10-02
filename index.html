@@ -24,12 +24,7 @@ body{background:#1a1a2e;font-family:Arial,sans-serif;color:#fff;overflow:hidden;
 .b-green{background:linear-gradient(135deg,#2ecc71,#27ae60);color:#fff}
 .b-red{background:linear-gradient(135deg,#ff4444,#c0392b);color:#fff}
 .b-promo{background:linear-gradient(135deg,#3498db,#2980b9);color:#fff}
-.b-name{background:linear-gradient(135deg,#e67e22,#d35400);color:#fff}
 .nk{padding:10px;font-size:15px;background:#1a1a2e;border:2px solid #ffd700;border-radius:6px;color:#fff;width:240px;margin-bottom:15px;text-align:center}
-.nk.error{border-color:#ff4444;animation:shake 0.5s}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
-.name-error{color:#ff4444;font-size:12px;margin-bottom:10px;display:none}
-.name-error.show{display:block}
 .lg{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;max-width:480px;width:100%;margin-bottom:15px;max-height:60vh;overflow-y:auto}
 .lc{background:#2a2a3e;border:2px solid #444;border-radius:8px;padding:10px;text-align:center;cursor:pointer;transition:all 0.2s}
 .lc:hover{border-color:#ffd700;transform:translateY(-2px)}
@@ -117,12 +112,6 @@ canvas{display:block;width:100%;height:100%;background:linear-gradient(#87ceeb,#
 .tip h3{color:#ffd700;margin-bottom:10px}
 .tip p{margin-bottom:15px;font-size:14px}
 .tip button{padding:10px 20px;background:#ffd700;color:#000;border:none;border-radius:6px;font-weight:bold;cursor:pointer}
-.name-change-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:1300;justify-content:center;align-items:center;padding:20px}
-.name-change-modal.on{display:flex}
-.name-change-box{background:#2a2a3e;border:3px solid #e67e22;border-radius:12px;padding:20px;max-width:380px;width:90%;text-align:center}
-.name-change-box h3{color:#e67e22;margin-bottom:15px;font-size:20px}
-.name-change-box .current-name{color:#ffd700;font-size:16px;margin-bottom:15px}
-.name-change-box .price{color:#ffd700;font-size:14px;margin-bottom:15px}
 </style>
 </head>
 <body>
@@ -130,11 +119,8 @@ canvas{display:block;width:100%;height:100%;background:linear-gradient(#87ceeb,#
 <div id="m" class="scr on">
 <div class="t">🐱 ЛЕТАЮЩАЯ КОШКА</div>
 <div class="st">50 УРОВНЕЙ 🔥</div>
-<div id="nameDisplay" style="color:#ffd700;font-size:16px;margin-bottom:10px;font-weight:bold"></div>
-<input type="text" class="nk" id="nk" placeholder="Введи ник" maxlength="12">
-<div class="name-error" id="nameError">⚠️ Введи имя чтобы играть!</div>
-<button class="b b-play" onclick="startWithCheck()">🎮 УРОВНИ</button>
-<button class="b b-name" onclick="openNameChange()">✏️ СМЕНИТЬ ИМЯ (150🪙)</button>
+<input type="text" class="nk" id="nk" placeholder="Ник" maxlength="12" value="Игрок">
+<button class="b b-play" onclick="showLv()"> УРОВНИ</button>
 <button class="b b-purple" onclick="showSk()">👕 СКИНЫ</button>
 <button class="b b-cyan" onclick="showAc()">🏆 ДОСТИЖЕНИЯ</button>
 <button class="b b-blue" onclick="showLb()">📊 ЛИДЕРБОРД</button>
@@ -227,29 +213,14 @@ canvas{display:block;width:100%;height:100%;background:linear-gradient(#87ceeb,#
 </div>
 </div>
 
-<div class="name-change-modal" id="nameChangeModal">
-<div class="name-change-box">
-<h3>✏️ СМЕНИТЬ ИМЯ</h3>
-<div class="current-name">Текущее имя: <span id="currentNameDisplay"></span></div>
-<div class="price">💰 Стоимость: 150 монет</div>
-<div style="text-align:center;color:#ffd700;margin-bottom:10px">Баланс: <span id="nameChangeBalance">0</span> 🪙</div>
-<input type="text" class="nk" id="newNameInput" placeholder="Новое имя" maxlength="12">
-<div style="display:flex;gap:10px;justify-content:center;margin-top:15px">
-<button class="b b-name" onclick="applyNameChange()" style="width:120px">Сменить</button>
-<button class="b b-back" onclick="closeNameChange()" style="width:120px">Отмена</button>
-</div>
-<div id="nameChangeError" style="color:#ff4444;margin-top:10px;font-size:12px"></div>
-</div>
-</div>
-
 <div class="admin" id="admPanel">
-<h2 id="admTitle">🛠 АДМИНКА</h2>
+<h2 id="admTitle"> АДМИНКА</h2>
 <button class="ab" id="bImm">🛡 Бессмертие: ВЫКЛ</button>
 <button class="ab" id="bMoney">💰 +100 монет</button>
 <button class="ab" id="bWeight">⚖ +50 кг</button>
 <button class="ab" id="bMaxW">⚖ Макс вес</button>
 <button class="ab" id="bWalls">💥 Сломать стены</button>
-<button class="ab" id="bDogs">🐕 Убить собак</button>
+<button class="ab" id="bDogs"> Убить собак</button>
 <button class="ab" id="bFish">🐟 +10 рыбок</button>
 <button class="ab" id="bWin">🏆 Победа</button>
 <button class="ab ab-close" onclick="closeAdm()">Закрыть</button>
@@ -269,7 +240,7 @@ function rsz(){cv.width=window.innerWidth;cv.height=window.innerHeight}
 rsz();window.addEventListener('resize',rsz);
 
 function show(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on')}
-function showM(){closeAdm();closePromo();closeNameChange();updateNameDisplay();show('m')}
+function showM(){closeAdm();closePromo();show('m')}
 function showLv(){renderLv();show('lv')}
 function showSk(){renderSk();show('sk')}
 function showAc(){renderAc();show('ac')}
@@ -299,105 +270,6 @@ document.getElementById('promoInput').addEventListener('keydown',function(e){
   if(e.key==='Escape')closePromo();
 });
 
-// ===== СИСТЕМА ИМЕНИ =====
-const NAME_KEY='cat_player_name';
-const NAME_CHANGE_COST=150;
-
-function loadSavedName(){
-  const saved=localStorage.getItem(NAME_KEY);
-  if(saved){
-    nick=saved;
-    document.getElementById('nk').value=saved;
-  }
-  updateNameDisplay();
-}
-
-function saveName(){
-  localStorage.setItem(NAME_KEY,nick);
-  updateNameDisplay();
-}
-
-function updateNameDisplay(){
-  const display=document.getElementById('nameDisplay');
-  if(nick&&nick!=='Игрок'){
-    display.textContent=' '+nick;
-  }else{
-    display.textContent='';
-  }
-}
-
-function startWithCheck(){
-  const nameInput=document.getElementById('nk');
-  const nameError=document.getElementById('nameError');
-  const newName=nameInput.value.trim();
-  
-  if(!newName){
-    nameInput.classList.add('error');
-    nameError.classList.add('show');
-    setTimeout(()=>{
-      nameInput.classList.remove('error');
-      nameError.classList.remove('show');
-    },2000);
-    return;
-  }
-  
-  nick=newName;
-  saveName();
-  showLv();
-}
-
-function openNameChange(){
-  document.getElementById('currentNameDisplay').textContent=nick||'Не задано';
-  document.getElementById('nameChangeBalance').textContent=money;
-  document.getElementById('newNameInput').value='';
-  document.getElementById('nameChangeError').textContent='';
-  document.getElementById('nameChangeModal').classList.add('on');
-  setTimeout(()=>document.getElementById('newNameInput').focus(),100);
-}
-
-function closeNameChange(){
-  document.getElementById('nameChangeModal').classList.remove('on');
-}
-
-function applyNameChange(){
-  const newNameInput=document.getElementById('newNameInput');
-  const errorDiv=document.getElementById('nameChangeError');
-  const newName=newNameInput.value.trim();
-  
-  if(!newName){
-    errorDiv.textContent='️ Введи новое имя!';
-    return;
-  }
-  
-  if(newName===nick){
-    errorDiv.textContent='⚠️ Это уже твоё имя!';
-    return;
-  }
-  
-  if(money<NAME_CHANGE_COST){
-    errorDiv.textContent='❌ Недостаточно монет! Нужно '+NAME_CHANGE_COST+' 🪙';
-    return;
-  }
-  
-  // Списываем монеты и меняем имя
-  money-=NAME_CHANGE_COST;
-  nick=newName;
-  saveName();
-  
-  errorDiv.style.color='#2ecc71';
-  errorDiv.textContent='✅ Имя изменено на "'+nick+'"!';
-  
-  setTimeout(()=>{
-    closeNameChange();
-    updateNameDisplay();
-  },1500);
-}
-
-document.getElementById('newNameInput').addEventListener('keydown',function(e){
-  if(e.key==='Enter')applyNameChange();
-  if(e.key==='Escape')closeNameChange();
-});
-
 function showTip(title,text){
   document.getElementById('tipTitle').textContent=title;
   document.getElementById('tipText').textContent=text;
@@ -405,27 +277,25 @@ function showTip(title,text){
 }
 function closeTip(){document.getElementById('tip').classList.remove('on')}
 
-let nick='';
+let nick='Игрок';
+document.getElementById('nk').oninput=function(e){nick=e.target.value.trim()||'Игрок'};
 let money=100,skins=['default'],curSkin='default';
 let done=[],achs={},isDev=false,isImm=false,adminUsed=false;
-
-// Загружаем сохранённое имя при старте
-loadSavedName();
 
 // ===== УЛУЧШЕННЫЙ ЛИДЕРБОРД С БОТАМИ =====
 const BOT_DATA=[
   {name:' КотМатроскин',w:80,lvl:2},
-  {name:' Барсик',w:150,lvl:4},
-  {name:'🐈 Мурка',w:220,lvl:6},
-  {name:'🐈‍ Васька',w:300,lvl:8},
+  {name:'😺 Барсик',w:150,lvl:4},
+  {name:' Мурка',w:220,lvl:6},
+  {name:'🐈⬛ Васька',w:300,lvl:8},
   {name:'🐱 Снежок',w:380,lvl:10},
   {name:'🐱 Рыжик',w:460,lvl:12},
   {name:'🐱 Пушок',w:540,lvl:14},
-  {name:'🐱 Тимоша',w:620,lvl:16},
+  {name:' Тимоша',w:620,lvl:16},
   {name:'🐱 Симба',w:700,lvl:18},
   {name:'🐱 Лео',w:780,lvl:20},
-  {name:' Масяня',w:860,lvl:22},
-  {name:' Кузя',w:940,lvl:24},
+  {name:'🐱 Масяня',w:860,lvl:22},
+  {name:'🐱 Кузя',w:940,lvl:24},
   {name:'🐱 Персик',w:1020,lvl:26},
   {name:'🐱 Ириска',w:1100,lvl:28},
   {name:'👑 Шуша',w:1200,lvl:30}
@@ -470,9 +340,9 @@ function renderLb(){
     let rankCls='';
     let medal=''+rank;
     
-    if(rank===1){cls+=' gold';rankCls='g';medal=''}
-    else if(rank===2){cls+=' silver';rankCls='s';medal=''}
-    else if(rank===3){cls+=' bronze';rankCls='b';medal=''}
+    if(rank===1){cls+=' gold';rankCls='g';medal='🥇'}
+    else if(rank===2){cls+=' silver';rankCls='s';medal='🥈'}
+    else if(rank===3){cls+=' bronze';rankCls='b';medal='🥉'}
     if(p.isPlayer)cls+=' player';
     
     const div=document.createElement('div');
@@ -507,32 +377,35 @@ const SKINS=[
 {id:'cool',name:'Крутая',icon:'😎',price:100,color:'#ff9933'},
 {id:'alien',name:'Пришелец',icon:'👽',price:200,color:'#9acd32'},
 {id:'robot',name:'Робот',icon:'🤖',price:400,color:'#778899'},
-{id:'pumpkin',name:'Тыква',icon:'',price:300,color:'#ff7518'},
+{id:'pumpkin',name:'Тыква',icon:'🎃',price:300,color:'#ff7518'},
 {id:'rainbow',name:'Радуга',icon:'🌈',price:600,color:'rainbow'},
-{id:'ghost',name:'Призрак',icon:'',price:500,color:'#e0e0ff'},
-{id:'santa',name:'Санта',icon:'🎅',price:700,color:'#ff9933'},
-{id:'hero',name:'Герой',icon:'',price:800,color:'#4169e1'},
-{id:'fish',name:'Рыбка',icon:'🐟',price:350,color:'#87ceeb'},
+{id:'ghost',name:'Призрак',icon:'👻',price:500,color:'#e0e0ff'},
+{id:'santa',name:'Санта',icon:'',price:700,color:'#ff9933'},
+{id:'hero',name:'Герой',icon:'🦸',price:800,color:'#4169e1'},
+{id:'fish',name:'Рыбка',icon:'',price:350,color:'#87ceeb'},
 {id:'diamond',name:'Алмаз',icon:'💎',price:1000,color:'#b9f2ff'},
-{id:'star',name:'Звезда',icon:'🌟',price:900,color:'#fff8dc'},
-{id:'spider',name:'Паук',icon:'️',price:9999,color:'#cc0000'}
+{id:'star',name:'Звезда',icon:'',price:900,color:'#fff8dc'},
+{id:'spider',name:'Паук',icon:'🕷️',price:9999,color:'#cc0000'}
 ];
 
+// ===== ПРОХОДИМЫЕ УРОВНИ =====
 function generateLevels(){
   const levels=[];
   for(let i=1;i<=50;i++){
-    const fishes=12+Math.floor(i*0.8);
-    const wet=4+Math.floor(i*0.4);
-    const saws=Math.floor(i*0.15);
-    const coins=8+Math.floor(i*0.5);
-    const dogs=2+Math.floor(i*0.15);
-    const wallsCount=2+Math.floor(i/15);
+    // Увеличиваем количество рыбок и корма для проходимости
+    const fishes=12+Math.floor(i*0.8); // 13-52 рыбки
+    const wet=4+Math.floor(i*0.4); // 4-24 корма
+    const saws=Math.floor(i*0.15); // 0-7 пил (меньше чем было)
+    const coins=8+Math.floor(i*0.5); // 8-33 монет
+    const dogs=2+Math.floor(i*0.15); // 2-9 собак (меньше чем было)
+    const wallsCount=2+Math.floor(i/15); // 2-5 стен
     const rw=50+i*15;
     
     const wallArr=[];
-    const maxWeight=20+fishes*5+wet*15+dogs*15-Math.floor(saws*0.3*8);
-    const lastWallNeed=Math.floor(maxWeight*0.6);
-    const firstWallNeed=Math.floor(lastWallNeed*0.25);
+    // Рассчитываем максимальный вес с запасом 40%
+    const maxWeight=20+fishes*5+wet*15+dogs*15-Math.floor(saws*0.3*8); // урон от пил уменьшен
+    const lastWallNeed=Math.floor(maxWeight*0.6); // было 0.7, теперь 0.6
+    const firstWallNeed=Math.floor(lastWallNeed*0.25); // было 0.3, теперь 0.25
     const step=wallsCount>1?(lastWallNeed-firstWallNeed)/(wallsCount-1):0;
     const colors=['#8B4513','#666','#222','#444','#555'];
     for(let j=0;j<wallsCount;j++){
@@ -560,10 +433,10 @@ const LVLS=generateLevels();
 
 const ACHS=[
 {id:'l1',title:'Новичок',desc:'Пройди уровень 1',icon:'🥉'},
-{id:'l10',title:'Опытный',desc:'Пройди уровень 10',icon:'🥈'},
+{id:'l10',title:'Опытный',desc:'Пройди уровень 10',icon:''},
 {id:'l20',title:'Ветеран',desc:'Пройди уровень 20',icon:'🥇'},
-{id:'l30',title:'Эксперт',desc:'Пройди уровень 30',icon:'👑'},
-{id:'l40',title:'Мастер',desc:'Пройди уровень 40',icon:''},
+{id:'l30',title:'Эксперт',desc:'Пройди уровень 30',icon:''},
+{id:'l40',title:'Мастер',desc:'Пройди уровень 40',icon:'💎'},
 {id:'l50',title:'Легенда',desc:'Пройди уровень 50',icon:'🏆'},
 {id:'rich',title:'Богач',desc:'1000 монет',icon:'💰'},
 {id:'survivor',title:'Выживший',desc:'Пройди без урона',icon:'🛡️'}
@@ -648,17 +521,18 @@ function sp(x,y,col,n){for(let i=0;i<n;i++)parts.push({x,y,vx:(Math.random()-0.5
 
 function update(){
   if(!on||win||dead)return;
-  const r=getR(),spd=0.5;
+  const r=getR(),spd=0.5; // Увеличена скорость
   cat.vx+=jX*spd;cat.vy+=jY*spd;cat.vx*=0.9;cat.vy*=0.9;
   cat.x+=cat.vx;cat.y+=cat.vy;
   if(cat.x-r<0){cat.x=r;cat.vx=0}
   if(cat.y-r<0){cat.y=r;cat.vy=0}
   if(cat.y+r>cv.height){cat.y=cv.height-r;cat.vy=0}
   cat.wing+=0.35;if(cat.hurt>0)cat.hurt--;if(cat.scd>0)cat.scd--;
+  
   fishes.forEach(f=>{if(f.eat)return;f.bob+=0.1;if(Math.hypot(f.x-cat.x,f.y-cat.y)<r+f.r){f.eat=true;cat.f++;cat.w+=5;sp(f.x,f.y,'#ffcc33',8)}});
   wets.forEach(f=>{if(f.eat)return;f.bob+=0.1;if(Math.hypot(f.x-cat.x,f.y-cat.y)<r+f.r){f.eat=true;cat.w+=15;sp(f.x,f.y,'#ff6600',10)}});
   sawsArr.forEach(s=>{s.ang+=s.sp;s.x+=s.vx;s.y+=s.vy;if(s.x<s.r||s.x>cv.width*0.72-s.r)s.vx*=-1;if(s.y<s.r||s.y>cv.height-s.r)s.vy*=-1;
-    if(cat.scd<=0&&Math.hypot(s.x-cat.x,s.y-cat.y)<r+s.r){cat.w=Math.max(10,cat.w-8);cat.scd=60;cat.hurt=20;noHit=false;sp(cat.x,cat.y,'#ff0000',12);if(cat.w<=10){dead=true;setTimeout(()=>end(false),800)}}});
+    if(cat.scd<=0&&Math.hypot(s.x-cat.x,s.y-cat.y)<r+s.r){cat.w=Math.max(10,cat.w-8);cat.scd=60;cat.hurt=20;noHit=false;sp(cat.x,cat.y,'#ff0000',12);if(cat.w<=10){dead=true;setTimeout(()=>end(false),800)}}}); // Урон уменьшен с 12 до 8
   coinsArr.forEach(c=>{if(c.got)return;if(Math.hypot(c.x-cat.x,c.y-cat.y)<r+c.r){c.got=true;money++;if(money>=1000)unlockAch('rich')}});
   dogs.forEach(d=>{if(!d.alive)return;d.ph+=0.03;const tx=cat.x-d.x,ty=cat.y-d.y,di=Math.hypot(tx,ty)||1;
     d.vx+=(tx/di)*0.03*d.speed+Math.sin(d.ph)*0.04;d.vy+=(ty/di)*0.03*d.speed+Math.cos(d.ph*1.3)*0.04;
@@ -667,7 +541,7 @@ function update(){
     if(d.cd>0)d.cd--;
     if(d.cd<=0&&Math.hypot(d.x-cat.x,d.y-cat.y)<r+d.r){
       if(cat.w>=50){d.alive=false;cat.w+=15;sp(d.x,d.y,'#ff6600',15)}
-      else{noHit=false;if(cat.f>0){cat.f--;cat.w=Math.max(20,cat.w-5)}cat.hurt=20;cat.hits++;d.cd=60;if(cat.hits>=5){dead=true;setTimeout(()=>end(false),800)}}}
+      else{noHit=false;if(cat.f>0){cat.f--;cat.w=Math.max(20,cat.w-5)}cat.hurt=20;cat.hits++;d.cd=60;if(cat.hits>=5){dead=true;setTimeout(()=>end(false),800)}}} // Увеличено с 4 до 5 ударов
   });
   walls.forEach(w=>{if(w.broken)return;const mx=Math.max(w.x,Math.min(cat.x,w.x+w.w)),my=Math.max(w.y,Math.min(cat.y,w.y+w.h));
     if(Math.hypot(cat.x-mx,cat.y-my)<r){if(cat.w>=w.n){w.broken=true;sp(w.x+w.w/2,cat.y,w.c,25);cat.vx*=0.5}else cat.vx=-Math.abs(cat.vx)-2}});
@@ -707,7 +581,7 @@ function drawCat(){
 }
 
 function drawFish(f){const fy=f.y+Math.sin(f.bob)*3;cx.fillStyle='#ff6b9d';cx.beginPath();cx.ellipse(f.x,fy,f.r,f.r*0.6,0,0,Math.PI*2);cx.fill();cx.beginPath();cx.moveTo(f.x-f.r,fy);cx.lineTo(f.x-f.r*1.5,fy-f.r*0.5);cx.lineTo(f.x-f.r*1.5,fy+f.r*0.5);cx.closePath();cx.fill();cx.fillStyle='#fff';cx.beginPath();cx.arc(f.x+f.r*0.4,fy-f.r*0.1,f.r*0.15,0,Math.PI*2);cx.fill();cx.fillStyle='#000';cx.beginPath();cx.arc(f.x+f.r*0.45,fy-f.r*0.1,f.r*0.07,0,Math.PI*2);cx.fill()}
-function drawWet(f){const fy=f.y+Math.sin(f.bob)*3;cx.fillStyle='#8B4513';cx.fillRect(f.x-f.r,fy-f.r*0.8,f.r*2,f.r*1.6);cx.fillStyle='#D2691E';cx.fillRect(f.x-f.r,fy-f.r*0.8,f.r*2,f.r*0.4);cx.fillStyle='#fff';cx.font='10px sans-serif';cx.textAlign='center';cx.fillText('🥫',f.x,fy+4);cx.textAlign='left'}
+function drawWet(f){const fy=f.y+Math.sin(f.bob)*3;cx.fillStyle='#8B4513';cx.fillRect(f.x-f.r,fy-f.r*0.8,f.r*2,f.r*1.6);cx.fillStyle='#D2691E';cx.fillRect(f.x-f.r,fy-f.r*0.8,f.r*2,f.r*0.4);cx.fillStyle='#fff';cx.font='10px sans-serif';cx.textAlign='center';cx.fillText('',f.x,fy+4);cx.textAlign='left'}
 function drawSaw(s){cx.save();cx.translate(s.x,s.y);cx.rotate(s.ang);cx.fillStyle='#888';cx.beginPath();for(let i=0;i<8;i++){const a=(i/8)*Math.PI*2,x=Math.cos(a)*s.r,y=Math.sin(a)*s.r;if(i===0)cx.moveTo(x,y);else cx.lineTo(x,y);const a2=a+Math.PI/8;cx.lineTo(Math.cos(a2)*s.r*0.7,Math.sin(a2)*s.r*0.7)}cx.closePath();cx.fill();cx.strokeStyle='#555';cx.lineWidth=2;cx.stroke();cx.fillStyle='#333';cx.beginPath();cx.arc(0,0,s.r*0.3,0,Math.PI*2);cx.fill();cx.restore()}
 function drawCoin(c){cx.fillStyle='#ffd700';cx.beginPath();cx.arc(c.x,c.y,c.r,0,Math.PI*2);cx.fill();cx.strokeStyle='#daa520';cx.lineWidth=2;cx.stroke()}
 function drawDog(d){if(!d.alive)return;cx.fillStyle='#a0522d';cx.beginPath();cx.ellipse(d.x,d.y,d.r,d.r*0.75,0,0,Math.PI*2);cx.fill();cx.fillStyle='#fff';cx.beginPath();cx.arc(d.x+d.r*0.4,d.y-d.r*0.2,d.r*0.15,0,Math.PI*2);cx.fill();cx.fillStyle='#c00';cx.beginPath();cx.arc(d.x+d.r*0.45,d.y-d.r*0.2,d.r*0.07,0,Math.PI*2);cx.fill()}
@@ -732,7 +606,7 @@ function draw(){
   cx.fillText(''+cat.f+' ⚖'+cat.w.toFixed(0)+'кг',15,43);
   cx.fillStyle='#ffd700';cx.fillText('🪙'+money,15,61);
   cx.fillStyle='#aaa';cx.font='11px sans-serif';cx.fillText('Уровень '+curLv+'/50',15,78);
-  if(isImm){cx.fillStyle='#64c8ff';cx.fillText('Бессм.',120,78)}
+  if(isImm){cx.fillStyle='#64c8ff';cx.fillText('🛡Бессм.',120,78)}
 }
 
 function end(isWin){
@@ -753,7 +627,7 @@ function end(isWin){
     st.innerHTML='Уровень '+curLv+'/50<br>Ник: '+nick+'<br>Вес: '+Math.round(cat.w)+' кг';
     if(curLv<50&&isUnlocked(curLv+1)){
       const b=document.createElement('button');b.className='b b-green';b.textContent='➡ ДАЛЬШЕ (Ур.'+(curLv+1)+')';b.onclick=function(){curLv++;startGame()};bt.appendChild(b)}
-    const b2=document.createElement('button');b2.className='b b-red';b2.textContent='🔄 ЗАНОВО';b2.onclick=function(){startGame()};bt.appendChild(b2);
+    const b2=document.createElement('button');b2.className='b b-red';b2.textContent=' ЗАНОВО';b2.onclick=function(){startGame()};bt.appendChild(b2);
     const b3=document.createElement('button');b3.className='b b-back';b3.textContent='🏠 МЕНЮ';b3.onclick=function(){showM()};bt.appendChild(b3);
   }else{
     t.textContent='💀 ПОРАЖЕНИЕ';t.className='gt l';rw.textContent='';
@@ -831,7 +705,7 @@ function checkPass(){
     if(on)updateAdmBtn();
   }else if(v==='1488'){
     adminUsed=true;
-    document.getElementById('admTitle').textContent='🛠 АДМИНКА';
+    document.getElementById('admTitle').textContent=' АДМИНКА';
     document.getElementById('admPanel').classList.remove('dev');
     document.getElementById('bMoney').textContent='💰 +100 монет';
     document.getElementById('bWeight').textContent='⚖ +50 кг';
@@ -875,7 +749,7 @@ function checkPromo(code){
     return{msg:'✅ +500 монет! 💰',ok:true}
   }
   if(code==='1488монет'||code==='1488'){
-    if(usedPromos.indexOf('1488')!==-1)return{msg:' Уже использован!',ok:false};
+    if(usedPromos.indexOf('1488')!==-1)return{msg:'❌ Уже использован!',ok:false};
     money+=1488;usedPromos.push('1488');
     return{msg:'✅ +1488 монет! 💰',ok:true}
   }
@@ -896,9 +770,10 @@ function checkPromo(code){
 function loop(){update();draw();requestAnimationFrame(loop)}
 loop();
 
+// Показываем подсказку при первом запуске
 if(!localStorage.getItem('tipShown')){
   setTimeout(()=>{
-    showTip('Как играть?','Собирай рыбок 🐟 и корм 🥫 чтобы расти. Избегай пил ⚙️ и собак 🐕. Пробей все стены чтобы победить!');
+    showTip('Как играть?','Собирай рыбок 🐟 и корм 🥫 чтобы расти. Избегай пил ️ и собак 🐕. Пробей все стены чтобы победить!');
     localStorage.setItem('tipShown','1');
   },500);
 }
