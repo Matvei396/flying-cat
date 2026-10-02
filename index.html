@@ -144,8 +144,8 @@ canvas{display:block;width:100%;height:100%}
 .reset-confirm .btns{display:flex;gap:10px;justify-content:center}
 .timer-display{position:fixed;top:60px;left:50%;transform:translateX(-50%);color:#ff0000;font-size:28px;font-weight:bold;z-index:100;display:none}
 .timer-display.on{display:block}
-.heart-explode{position:fixed;pointer-events:none;z-index:5000;font-size:40px;animation:heartBoom 0.8s forwards}
-@keyframes heartBoom{0%{transform:translate(-50%,-50%) scale(1);opacity:1}50%{transform:translate(-50%,-50%) scale(2);opacity:0.8}100%{transform:translate(-50%,-50%) scale(3);opacity:0}}
+.heart-explode{position:fixed;pointer-events:none;z-index:5000;font-size:60px;animation:heartBoom 0.8s forwards}
+@keyframes heartBoom{0%{transform:translate(-50%,-50%) scale(1);opacity:1}50%{transform:translate(-50%,-50%) scale(2.5);opacity:0.8}100%{transform:translate(-50%,-50%) scale(4);opacity:0}}
 </style>
 </head>
 <body>
@@ -156,19 +156,19 @@ canvas{display:block;width:100%;height:100%}
 <div class="st">5 ЛОКАЦИЙ × 50 УРОВНЕЙ ✨ 3 ЖИЗНИ</div>
 <div id="nameDisplay" style="color:#ffd700;font-size:16px;margin-bottom:10px;font-weight:bold"></div>
 <input type="text" class="nk" id="nk" placeholder="Введи ник" maxlength="12">
-<div class="name-error" id="nameError">⚠️ Введи имя!</div>
+<div class="name-error" id="nameError">️ Введи имя!</div>
 <button class="b b-loc" onclick="showLoc()">️ ЛОКАЦИИ</button>
-<button class="b b-name" onclick="openNameChange()">️ СМЕНИТЬ ИМЯ (150🪙)</button>
+<button class="b b-name" onclick="openNameChange()">✏️ СМЕНИТЬ ИМЯ (150🪙)</button>
 <button class="b b-boost" onclick="openBoostShop()"> БУСТЕРЫ</button>
 <button class="b b-purple" onclick="showSk()"> СКИНЫ</button>
-<button class="b b-cyan" onclick="showAc()">🏆 ДОСТИЖЕНИЯ</button>
-<button class="b b-blue" onclick="showLb()">📊 ЛИДЕРБОРД</button>
-<button class="b b-back" onclick="showAdm()"> АДМИНКА</button>
+<button class="b b-cyan" onclick="showAc()"> ДОСТИЖЕНИЯ</button>
+<button class="b b-blue" onclick="showLb()"> ЛИДЕРБОРД</button>
+<button class="b b-back" onclick="showAdm()">🔐 АДМИНКА</button>
 <button class="b b-reset" onclick="confirmReset()">️ СБРОС АККАУНТА</button>
 </div>
 
 <div id="loc" class="scr">
-<div class="t" style="font-size:28px">️ ВЫБОР ЛОКАЦИИ</div>
+<div class="t" style="font-size:28px">🗺️ ВЫБОР ЛОКАЦИИ</div>
 <div class="loc-selector" id="locList"></div>
 <button class="b b-back" onclick="showM()">← В МЕНЮ</button>
 </div>
@@ -183,7 +183,7 @@ canvas{display:block;width:100%;height:100%}
 <div id="sk" class="scr">
 <div class="md">
 <h2>👕 СКИНЫ</h2>
-<div style="text-align:center;color:#ffd700;margin-bottom:8px">🪙 <span id="bl">0</span> |  <span id="sealCount">0</span></div>
+<div style="text-align:center;color:#ffd700;margin-bottom:8px">🪙 <span id="bl">0</span> | 🔑 <span id="sealCount">0</span></div>
 <div class="sg" id="sl"></div>
 <button class="b b-promo" onclick="openPromo()" style="width:100%;margin-bottom:6px">🎁 ПРОМОКОД</button>
 <button class="b b-back" onclick="showM()" style="width:100%">В МЕНЮ</button>
@@ -192,7 +192,7 @@ canvas{display:block;width:100%;height:100%}
 
 <div id="ac" class="scr">
 <div class="md">
-<h2>🏆 ДОСТИЖЕНИЯ</h2>
+<h2> ДОСТИЖЕНИЯ</h2>
 <div id="al"></div>
 <button class="b b-back" onclick="showM()" style="width:100%;margin-top:10px">В МЕНЮ</button>
 </div>
@@ -271,7 +271,7 @@ canvas{display:block;width:100%;height:100%}
 <h3>✏️ СМЕНИТЬ ИМЯ</h3>
 <div style="color:#ffd700;margin-bottom:10px">Текущее: <span id="currentNameDisplay"></span></div>
 <div style="color:#ffd700;margin-bottom:10px">Цена: 150 монет</div>
-<div style="color:#ffd700;margin-bottom:10px">Баланс: <span id="nameChangeBalance">0</span> </div>
+<div style="color:#ffd700;margin-bottom:10px">Баланс: <span id="nameChangeBalance">0</span> 🪙</div>
 <input type="text" class="nk" id="newNameInput" placeholder="Новое имя" maxlength="12">
 <div class="btns" style="margin-top:15px">
 <button class="b b-name" onclick="applyNameChange()" style="width:120px">Сменить</button>
@@ -283,7 +283,7 @@ canvas{display:block;width:100%;height:100%}
 
 <div id="boostShop" class="name-change-modal">
 <div class="name-change-box" style="border-color:#ff6b9d">
-<h3 style="color:#ff6b9d">⚡ БУСТЕРЫ</h3>
+<h3 style="color:#ff6b9d"> БУСТЕРЫ</h3>
 <div style="color:#ffd700;margin-bottom:10px">🪙 <span id="boostBalance">0</span></div>
 <div id="boostList" style="margin:15px 0"></div>
 <button class="b b-back" onclick="closeBoostShop()" style="width:100%">Закрыть</button>
@@ -291,17 +291,17 @@ canvas{display:block;width:100%;height:100%}
 </div>
 
 <div class="admin" id="admPanel">
-<h2 id="admTitle">🛠 АДМИНКА</h2>
+<h2 id="admTitle"> АДМИНКА</h2>
 <button class="ab" id="bImm">🛡 Бессмертие: ВЫКЛ</button>
 <button class="ab" id="bMoney">💰 +100 монет</button>
 <button class="ab" id="bWeight">⚖ +50 кг</button>
-<button class="ab" id="bMaxW"> Макс вес</button>
+<button class="ab" id="bMaxW">⚖ Макс вес</button>
 <button class="ab" id="bWalls">💥 Сломать стены</button>
-<button class="ab" id="bDogs">🐕 Убить собак</button>
+<button class="ab" id="bDogs"> Убить собак</button>
 <button class="ab" id="bFish">🐟 +10 рыбок</button>
-<button class="ab" id="bShield">️ Щит 30 сек</button>
-<button class="ab" id="bSpeed"> Скорость 30 сек</button>
-<button class="ab" id="bMagnet"> Магнит 30 сек</button>
+<button class="ab" id="bShield">🛡️ Щит 30 сек</button>
+<button class="ab" id="bSpeed">⚡ Скорость 30 сек</button>
+<button class="ab" id="bMagnet">🧲 Магнит 30 сек</button>
 <button class="ab" id="bSeal">🔑 +6 чертежей</button>
 <button class="ab" id="bLives">❤️ +3 жизни</button>
 <button class="ab" id="bWin">🏆 Победа</button>
@@ -324,7 +324,7 @@ canvas{display:block;width:100%;height:100%}
 </div>
 
 <div class="reset-confirm" id="resetConfirm">
-<h3>⚠️ СБРОС АККАУНТА</h3>
+<h3>️ СБРОС АККАУНТА</h3>
 <p>Весь прогресс будет удалён!</p>
 <div class="btns">
 <button class="b b-red" onclick="resetAccount()" style="width:120px">Да</button>
@@ -338,14 +338,14 @@ const mgCanvas=document.getElementById('minigameCanvas'),mgCx=mgCanvas.getContex
 function rsz(){cv.width=window.innerWidth;cv.height=window.innerHeight;mgCanvas.width=window.innerWidth;mgCanvas.height=window.innerHeight}
 rsz();window.addEventListener('resize',rsz);
 
-// ===== АУДИО СИСТЕМА =====
+// ===== АУДИО =====
 let audioCtx=null,musicPlaying=false,soundEnabled=true,musicGain=null,musicInterval=null;
 function initAudio(){
   if(!audioCtx){
     try{
       audioCtx=new(window.AudioContext||window.webkitAudioContext)();
       musicGain=audioCtx.createGain();
-      musicGain.gain.value=0.25; // Громкая музыка в меню
+      musicGain.gain.value=0.25;
       musicGain.connect(audioCtx.destination);
     }catch(e){}
   }
@@ -369,13 +369,11 @@ function playWinSound(){[523,659,784,1047].forEach((n,i)=>setTimeout(()=>playTon
 function playLoseSound(){[400,300,200,100].forEach((n,i)=>setTimeout(()=>playTone(n,0.3,'sine',0.2),i*200))}
 function playBossHitSound(){playTone(100,0.2,'sawtooth',0.25);playTone(80,0.2,'square',0.2)}
 function playHeartExplode(){
-  // Звук взрыва сердечка - низкий грохот
   playTone(150,0.3,'sawtooth',0.3);
   setTimeout(()=>playTone(80,0.4,'square',0.25),100);
   setTimeout(()=>playTone(50,0.5,'sine',0.2),200);
 }
 function playCountdownSound(num){
-  // Разные тона для 1, 2, 3, GO
   const tones={1:440,2:554,3:659,'GO':880};
   const types={1:'sine',2:'sine',3:'triangle','GO':'square'};
   const vols={1:0.3,2:0.3,3:0.35,'GO':0.4};
@@ -406,7 +404,7 @@ function startMusic(){
 function stopMusic(){musicPlaying=false;if(musicInterval){clearInterval(musicInterval);musicInterval=null}}
 function toggleSound(){
   soundEnabled=!soundEnabled;
-  document.getElementById('soundBtn').textContent=soundEnabled?'🔊':'🔇';
+  document.getElementById('soundBtn').textContent=soundEnabled?'':'🔇';
   if(!soundEnabled)stopMusic();
   else startMusic();
 }
@@ -433,6 +431,7 @@ function loadProgress(){
       if(d.bossSeals)bossSeals=d.bossSeals;
       if(d.bossesDefeated)bossesDefeated=d.bossesDefeated;
       if(d.locUnlocked)LOCATIONS.forEach((l,i)=>{if(d.locUnlocked[i])l.unlocked=true});
+      if(d.lives!==undefined)lives=d.lives;
     }
   }catch(e){}
 }
@@ -440,7 +439,7 @@ function saveProgress(){
   try{
     const locUnlocked={};
     LOCATIONS.forEach((l,i)=>locUnlocked[i]=l.unlocked);
-    const d={nick:nick,money:money,skins:skins,curSkin:curSkin,done:done,achs:achs,playerBest:playerBest,usedPromos:usedPromos,isDev:isDev,devBadgeOn:document.getElementById('devBadge').classList.contains('on'),currentLoc:currentLoc,bossSeals:bossSeals,bossesDefeated:bossesDefeated,locUnlocked:locUnlocked,savedAt:Date.now()};
+    const d={nick:nick,money:money,skins:skins,curSkin:curSkin,done:done,achs:achs,playerBest:playerBest,usedPromos:usedPromos,isDev:isDev,devBadgeOn:document.getElementById('devBadge').classList.contains('on'),currentLoc:currentLoc,bossSeals:bossSeals,bossesDefeated:bossesDefeated,locUnlocked:locUnlocked,lives:lives,savedAt:Date.now()};
     localStorage.setItem(SAVE_KEY,JSON.stringify(d));
     showSaveIndicator();
   }catch(e){}
@@ -455,7 +454,7 @@ function resetAccount(){
   localStorage.removeItem(SAVE_KEY);
   localStorage.removeItem('cat_player_name');
   localStorage.removeItem('tipShown');
-  nick='';money=100;skins=['default'];curSkin='default';done=[];achs={};playerBest={w:0,lvl:0};usedPromos=[];isDev=false;isImm=false;adminUsed=false;currentLoc=1;bossSeals={1:0,2:0,3:0,4:0,5:0};bossesDefeated={1:false,2:false,3:false,4:false,5:false};
+  nick='';money=100;skins=['default'];curSkin='default';done=[];achs={};playerBest={w:0,lvl:0};usedPromos=[];isDev=false;isImm=false;adminUsed=false;currentLoc=1;bossSeals={1:0,2:0,3:0,4:0,5:0};bossesDefeated={1:false,2:false,3:false,4:false,5:false};lives=3;
   LOCATIONS.forEach((l,i)=>{l.unlocked=i===0});
   document.getElementById('devBadge').classList.remove('on');
   document.getElementById('resetConfirm').classList.remove('on');
@@ -483,18 +482,18 @@ document.getElementById('promoInput').addEventListener('keydown',function(e){if(
 const NAME_KEY='cat_player_name',NAME_CHANGE_COST=150;
 function loadSavedName(){const s=localStorage.getItem(NAME_KEY);if(s){nick=s;document.getElementById('nk').value=s}updateNameDisplay()}
 function saveName(){localStorage.setItem(NAME_KEY,nick);updateNameDisplay();saveProgress()}
-function updateNameDisplay(){const d=document.getElementById('nameDisplay');d.textContent=nick&&nick!=='Игрок'?'👤 '+nick:''}
+function updateNameDisplay(){const d=document.getElementById('nameDisplay');d.textContent=nick&&nick!=='Игрок'?' '+nick:''}
 function startWithCheck(){const ni=document.getElementById('nk'),ne=document.getElementById('nameError'),nn=ni.value.trim();if(!nn){ni.classList.add('error');ne.classList.add('show');setTimeout(()=>{ni.classList.remove('error');ne.classList.remove('show')},2000);return}nick=nn;saveName();showLoc();initAudio();startMusic()}
 function openNameChange(){document.getElementById('currentNameDisplay').textContent=nick||'Не задано';document.getElementById('nameChangeBalance').textContent=money;document.getElementById('newNameInput').value='';document.getElementById('nameChangeError').textContent='';document.getElementById('nameChangeModal').classList.add('on');setTimeout(()=>document.getElementById('newNameInput').focus(),100)}
 function closeNameChange(){document.getElementById('nameChangeModal').classList.remove('on')}
-function applyNameChange(){const ni=document.getElementById('newNameInput'),er=document.getElementById('nameChangeError'),nn=ni.value.trim();if(!nn){er.textContent='⚠️ Введи имя!';return}if(nn===nick){er.textContent='️ Это уже твоё имя!';return}if(money<NAME_CHANGE_COST){er.textContent='❌ Нужно '+NAME_CHANGE_COST+' ';return}money-=NAME_CHANGE_COST;nick=nn;saveName();saveProgress();er.style.color='#2ecc71';er.textContent='✅ Имя: "'+nick+'"';setTimeout(()=>{closeNameChange();updateNameDisplay()},1500)}
+function applyNameChange(){const ni=document.getElementById('newNameInput'),er=document.getElementById('nameChangeError'),nn=ni.value.trim();if(!nn){er.textContent='️ Введи имя!';return}if(nn===nick){er.textContent='⚠️ Это уже твоё имя!';return}if(money<NAME_CHANGE_COST){er.textContent='❌ Нужно '+NAME_CHANGE_COST+' 🪙';return}money-=NAME_CHANGE_COST;nick=nn;saveName();saveProgress();er.style.color='#2ecc71';er.textContent='✅ Имя: "'+nick+'"';setTimeout(()=>{closeNameChange();updateNameDisplay()},1500)}
 document.getElementById('newNameInput').addEventListener('keydown',function(e){if(e.key==='Enter')applyNameChange();if(e.key==='Escape')closeNameChange()});
 
 const BOOSTS={shield:{name:'🛡️ Щит',desc:'Защита 30 сек',price:50,duration:30},speed:{name:'⚡ Скорость',desc:'x2 скорость 30 сек',price:40,duration:30},magnet:{name:'🧲 Магнит',desc:'Притягивает предметы',price:60,duration:30}};
 let activeBoosts={shield:0,speed:0,magnet:0};
 function openBoostShop(){document.getElementById('boostBalance').textContent=money;const l=document.getElementById('boostList');l.innerHTML='';for(const k in BOOSTS){const b=BOOSTS[k],d=document.createElement('div');d.style.cssText='background:#1a1a2e;border:2px solid #444;border-radius:8px;padding:10px;margin:6px 0;display:flex;justify-content:space-between;align-items:center';d.innerHTML='<div style="text-align:left"><div style="font-weight:bold">'+b.name+'</div><div style="font-size:11px;color:#aaa">'+b.desc+'</div></div><button class="b b-boost" style="width:auto;padding:8px 15px;font-size:12px;margin:0">'+b.price+'🪙</button>';d.querySelector('button').onclick=function(){buyBoost(k)};l.appendChild(d)}document.getElementById('boostShop').classList.add('on')}
 function closeBoostShop(){document.getElementById('boostShop').classList.remove('on')}
-function buyBoost(k){const b=BOOSTS[k];if(money<b.price){alert('Нужно '+b.price+' ');return}money-=b.price;activeBoosts[k]=b.duration*60;saveProgress();alert('✅ '+b.name+' на '+b.duration+' сек!');closeBoostShop()}
+function buyBoost(k){const b=BOOSTS[k];if(money<b.price){alert('Нужно '+b.price+' 🪙');return}money-=b.price;activeBoosts[k]=b.duration*60;saveProgress();alert('✅ '+b.name+' на '+b.duration+' сек!');closeBoostShop()}
 
 function showTip(t,tx){document.getElementById('tipTitle').textContent=t;document.getElementById('tipText').textContent=tx;document.getElementById('tip').classList.add('on')}
 function closeTip(){document.getElementById('tip').classList.remove('on')}
@@ -503,6 +502,7 @@ let nick='',money=100,skins=['default'],curSkin='default';
 let done=[],achs={},isDev=false,isImm=false,adminUsed=false;
 let usedPromos=[],playerBest={w:0,lvl:0},currentLoc=1;
 let bossSeals={1:0,2:0,3:0,4:0,5:0},bossesDefeated={1:false,2:false,3:false,4:false,5:false};
+let lives=3;
 
 const LOCATIONS=[
   {id:1,name:'Поле',icon:'🌾',desc:'Снятие стенок',boss:'Сопли Жуй',unlocked:true},
@@ -514,12 +514,12 @@ const LOCATIONS=[
 
 loadProgress();loadSavedName();
 
-const BOT_DATA=[{name:'🐱 КотМатроскин',w:80,lvl:2},{name:'😺 Барсик',w:150,lvl:4},{name:' Мурка',w:220,lvl:6},{name:'🐈‍⬛ Васька',w:300,lvl:8},{name:'🐱 Снежок',w:380,lvl:10},{name:'🐱 Рыжик',w:460,lvl:12},{name:'🐱 Пушок',w:540,lvl:14},{name:'🐱 Тимоша',w:620,lvl:16},{name:' Симба',w:700,lvl:18},{name:'🐱 Лео',w:780,lvl:20},{name:'🐱 Масяня',w:860,lvl:22},{name:'🐱 Кузя',w:940,lvl:24},{name:'🐱 Персик',w:1020,lvl:26},{name:'🐱 Ириска',w:1100,lvl:28},{name:' Шуша',w:1200,lvl:30}];
+const BOT_DATA=[{name:'🐱 КотМатроскин',w:80,lvl:2},{name:'😺 Барсик',w:150,lvl:4},{name:'🐈 Мурка',w:220,lvl:6},{name:'🐈‍⬛ Васька',w:300,lvl:8},{name:'🐱 Снежок',w:380,lvl:10},{name:' Рыжик',w:460,lvl:12},{name:'🐱 Пушок',w:540,lvl:14},{name:'🐱 Тимоша',w:620,lvl:16},{name:'🐱 Симба',w:700,lvl:18},{name:'🐱 Лео',w:780,lvl:20},{name:' Масяня',w:860,lvl:22},{name:'🐱 Кузя',w:940,lvl:24},{name:'🐱 Персик',w:1020,lvl:26},{name:' Ириска',w:1100,lvl:28},{name:'👑 Шуша',w:1200,lvl:30}];
 let leaderboard=[];
 function initLeaderboard(){leaderboard=[];for(let i=0;i<BOT_DATA.length;i++)leaderboard.push({name:BOT_DATA[i].name,w:BOT_DATA[i].w,lvl:BOT_DATA[i].lvl,isPlayer:false});if(playerBest.w>0)leaderboard.push({name:nick+' (Вы)',w:playerBest.w,lvl:playerBest.lvl,isPlayer:true,isNew:false});leaderboard.sort((a,b)=>b.w-a.w)}
 initLeaderboard();
 function addPlayerResult(weight,level){if(weight>playerBest.w){playerBest.w=weight;playerBest.lvl=level;saveProgress()}leaderboard=leaderboard.filter(p=>!p.isPlayer);leaderboard.push({name:nick+' (Вы)',w:playerBest.w,lvl:playerBest.lvl,isPlayer:true,isNew:true});leaderboard.sort((a,b)=>b.w-a.w);leaderboard=leaderboard.slice(0,20);setTimeout(()=>{leaderboard.forEach(p=>p.isNew=false)},3000)}
-function renderLb(){const c=document.getElementById('lbList');c.innerHTML='';if(!leaderboard.length){c.innerHTML='<div style="text-align:center;padding:30px;color:#aaa">Пока нет рекордов</div>';return}leaderboard.forEach((p,i)=>{const r=i+1;let cls='lb-item',rc='',m=''+r;if(r===1){cls+=' gold';rc='g';m='🥇'}else if(r===2){cls+=' silver';rc='s';m='🥈'}else if(r===3){cls+=' bronze';rc='b';m='🥉'}if(p.isPlayer)cls+=' player';const d=document.createElement('div');d.className=cls;d.innerHTML='<div class="lb-rank '+rc+'">'+m+'</div><div class="lb-info"><div class="lb-name">'+p.name+'</div><div class="lb-lvl">Уровень '+p.lvl+'/50</div>'+(p.isNew?'<div class="lb-new">🆕 НОВЫЙ РЕКОРД!</div>':'')+'</div><div class="lb-weight"><div class="w">'+p.w+'</div><div class="u">кг</div></div>';c.appendChild(d)});const pp=leaderboard.findIndex(p=>p.isPlayer);if(pp>0){const d=document.createElement('div');d.style.cssText='text-align:center;color:#2ecc71;font-size:12px;margin-top:10px;font-weight:bold';d.textContent='🎯 Обгони ещё '+pp+' ботов!';c.appendChild(d)}}
+function renderLb(){const c=document.getElementById('lbList');c.innerHTML='';if(!leaderboard.length){c.innerHTML='<div style="text-align:center;padding:30px;color:#aaa">Пока нет рекордов</div>';return}leaderboard.forEach((p,i)=>{const r=i+1;let cls='lb-item',rc='',m=''+r;if(r===1){cls+=' gold';rc='g';m='🥇'}else if(r===2){cls+=' silver';rc='s';m=''}else if(r===3){cls+=' bronze';rc='b';m='🥉'}if(p.isPlayer)cls+=' player';const d=document.createElement('div');d.className=cls;d.innerHTML='<div class="lb-rank '+rc+'">'+m+'</div><div class="lb-info"><div class="lb-name">'+p.name+'</div><div class="lb-lvl">Уровень '+p.lvl+'/50</div>'+(p.isNew?'<div class="lb-new">🆕 НОВЫЙ РЕКОРД!</div>':'')+'</div><div class="lb-weight"><div class="w">'+p.w+'</div><div class="u">кг</div></div>';c.appendChild(d)});const pp=leaderboard.findIndex(p=>p.isPlayer);if(pp>0){const d=document.createElement('div');d.style.cssText='text-align:center;color:#2ecc71;font-size:12px;margin-top:10px;font-weight:bold';d.textContent='🎯 Обгони ещё '+pp+' ботов!';c.appendChild(d)}}
 
 const SKINS=[
 {id:'default',name:'Обычная',icon:'🐱',price:0,color:'#ff9933'},
@@ -527,15 +527,15 @@ const SKINS=[
 {id:'alien',name:'Пришелец',icon:'👽',price:200,color:'#9acd32'},
 {id:'robot',name:'Робот',icon:'🤖',price:400,color:'#778899'},
 {id:'pumpkin',name:'Тыква',icon:'🎃',price:300,color:'#ff7518'},
-{id:'rainbow',name:'Радуга',icon:'🌈',price:600,color:'rainbow'},
+{id:'rainbow',name:'Радуга',icon:'',price:600,color:'rainbow'},
 {id:'ghost',name:'Призрак',icon:'👻',price:500,color:'#e0e0ff'},
 {id:'santa',name:'Санта',icon:'🎅',price:700,color:'#ff9933'},
 {id:'hero',name:'Герой',icon:'🦸',price:800,color:'#4169e1'},
 {id:'fish',name:'Рыбка',icon:'🐟',price:350,color:'#87ceeb'},
 {id:'diamond',name:'Алмаз',icon:'💎',price:1000,color:'#b9f2ff'},
 {id:'star',name:'Звезда',icon:'🌟',price:900,color:'#fff8dc'},
-{id:'spider',name:'Паук',icon:'🕷️',price:9999,color:'#cc0000'},
-{id:'chicken',name:'Чикен Ган',icon:'',price:5000,color:'#fff8dc'},
+{id:'spider',name:'Паук',icon:'️',price:9999,color:'#cc0000'},
+{id:'chicken',name:'Чикен Ган',icon:'🐔',price:5000,color:'#fff8dc'},
 {id:'britvin',name:'Бритвин',icon:'👤',price:6,color:'#ffd700',seals:true}
 ];
 
@@ -587,11 +587,11 @@ const ACHS=[
 {id:'l20',title:'Ветеран',desc:'Пройди уровень 20',icon:'🥇'},
 {id:'l30',title:'Эксперт',desc:'Пройди уровень 30',icon:'👑'},
 {id:'l40',title:'Мастер',desc:'Пройди уровень 40',icon:'💎'},
-{id:'l50',title:'Легенда',desc:'Пройди уровень 50',icon:''},
+{id:'l50',title:'Легенда',desc:'Пройди уровень 50',icon:'🏆'},
 {id:'rich',title:'Богач',desc:'1000 монет',icon:'💰'},
 {id:'survivor',title:'Выживший',desc:'Пройди без урона',icon:'🛡️'},
 {id:'combo',title:'Комбо',desc:'Собери 5 рыбок подряд',icon:'🔥'},
-{id:'boost',title:'Бустер',desc:'Используй бустер',icon:'⚡'},
+{id:'boost',title:'Бустер',desc:'Используй бустер',icon:''},
 {id:'boss1',title:'Победитель босса 1',desc:'Победи босса Поля',icon:'👑'},
 {id:'boss2',title:'Победитель босса 2',desc:'Победи босса Леса',icon:'👑'},
 {id:'boss3',title:'Победитель босса 3',desc:'Победи босса Лавы',icon:'👑'},
@@ -663,7 +663,6 @@ let bossAppeared=false;
 let levelTimer=0,levelTimerActive=false;
 let botsKilled=0,botsToKillTotal=0;
 let clickBots=[];
-let lives=3; // 3 ЖИЗНИ
 
 function initBgParticles(){bgParticles=[];const count=currentLoc===4?40:currentLoc===3?25:currentLoc===2?15:0;for(let i=0;i<count;i++)bgParticles.push({x:Math.random()*cv.width,y:Math.random()*cv.height,vx:(Math.random()-0.5)*0.5,vy:currentLoc===4?(0.5+Math.random()):currentLoc===3?(-0.5-Math.random()):0,size:currentLoc===4?(2+Math.random()*3):currentLoc===3?(3+Math.random()*4):5,life:Math.random()*100})}
 function updateBgParticles(){bgParticles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.life++;if(currentLoc===4){if(p.y>cv.height){p.y=0;p.x=Math.random()*cv.width}}else if(currentLoc===3){if(p.y<-10){p.y=cv.height+10;p.x=Math.random()*cv.width}p.x+=Math.sin(p.life*0.1)*0.5}})}
@@ -684,28 +683,12 @@ function startGame(){
   const cd=document.getElementById('cd'),txt=document.getElementById('ct');
   cd.classList.add('on');
   let c=3;txt.textContent=c;txt.className='cn';
-  
-  // Озвучка обратного отсчёта
   playCountdownSound(3);
-  
   const iv=setInterval(()=>{
     c--;
-    if(c>0){
-      txt.textContent=c;
-      playCountdownSound(c);
-    }else if(c===0){
-      txt.textContent='GO!';
-      txt.className='cn go';
-      playCountdownSound('GO');
-    }else{
-      clearInterval(iv);
-      cd.classList.remove('on');
-      init();
-      on=true;
-      document.getElementById('j').classList.add('on');
-      document.getElementById('rb').classList.add('on');
-      document.getElementById('ab').classList.add('on');
-    }
+    if(c>0){txt.textContent=c;playCountdownSound(c)}
+    else if(c===0){txt.textContent='GO!';txt.className='cn go';playCountdownSound('GO')}
+    else{clearInterval(iv);cd.classList.remove('on');init();on=true;document.getElementById('j').classList.add('on');document.getElementById('rb').classList.add('on');document.getElementById('ab').classList.add('on')}
   },1000);
 }
 
@@ -747,10 +730,9 @@ function init(){
 
 function getR(){return 18+cat.w*0.18}
 function sp(x,y,col,n){for(let i=0;i<n;i++)parts.push({x:x,y:y,vx:(Math.random()-0.5)*8,vy:(Math.random()-0.5)*8,life:25,max:25,color:col,size:2+Math.random()*4})}
-function showCombo(n){const cd=document.getElementById('comboDisplay');cd.textContent=' COMBO x'+n+'!';cd.classList.remove('show');void cd.offsetWidth;cd.classList.add('show')}
-function updateBoosts(){for(const k in activeBoosts){if(activeBoosts[k]>0)activeBoosts[k]--}const ind=document.getElementById('boostIndicator'),txt=document.getElementById('boostText'),acts=[];if(activeBoosts.shield>0)acts.push('🛡️'+Math.ceil(activeBoosts.shield/60)+'с');if(activeBoosts.speed>0)acts.push('⚡'+Math.ceil(activeBoosts.speed/60)+'с');if(activeBoosts.magnet>0)acts.push(''+Math.ceil(activeBoosts.magnet/60)+'с');if(acts.length){ind.classList.add('on');txt.textContent=acts.join(' ')}else ind.classList.remove('on')}
+function showCombo(n){const cd=document.getElementById('comboDisplay');cd.textContent='🔥 COMBO x'+n+'!';cd.classList.remove('show');void cd.offsetWidth;cd.classList.add('show')}
+function updateBoosts(){for(const k in activeBoosts){if(activeBoosts[k]>0)activeBoosts[k]--}const ind=document.getElementById('boostIndicator'),txt=document.getElementById('boostText'),acts=[];if(activeBoosts.shield>0)acts.push('🛡️'+Math.ceil(activeBoosts.shield/60)+'с');if(activeBoosts.speed>0)acts.push('⚡'+Math.ceil(activeBoosts.speed/60)+'с');if(activeBoosts.magnet>0)acts.push('🧲'+Math.ceil(activeBoosts.magnet/60)+'с');if(acts.length){ind.classList.add('on');txt.textContent=acts.join(' ')}else ind.classList.remove('on')}
 
-// ===== ВЗРЫВ СЕРДЕЧКА =====
 function explodeHeart(){
   playHeartExplode();
   const heart=document.createElement('div');
@@ -774,7 +756,7 @@ function startBossMinigame(){
   const mgScreen=document.getElementById('minigameScreen');
   const hint=document.getElementById('minigameHint');
   mgScreen.classList.add('on');
-  const hints={1:'🌾 ПОЛЕ: Кликай по боссу 10 раз!',2:'🌲 ЛЕС: Уворачивайся от деревьев 10 сек!',3:'🌋 ЛАВА: Собери 15 банок энергии!',4:'❄️ СНЕГ: Нажми на снежинки 20 раз!',5:' ПУСТОШЬ: Уклоняйся от камней 15 сек!'};
+  const hints={1:'🌾 ПОЛЕ: Кликай по боссу 10 раз!',2:'🌲 ЛЕС: Уворачивайся от деревьев 10 сек!',3:'🌋 ЛАВА: Собери 15 банок энергии!',4:'❄️ СНЕГ: Нажми на снежинки 20 раз!',5:'🌑 ПУСТОШЬ: Уклоняйся от камней 15 сек!'};
   hint.textContent=hints[currentLoc];
   initMinigame(currentLoc);
 }
@@ -808,7 +790,6 @@ function endMinigame(win){
     unlockAch('boss'+currentLoc);
     saveProgress();
     playWinSound();
-    // Разблокируем следующую локацию
     if(currentLoc<5){
       LOCATIONS[currentLoc].unlocked=true;
       saveProgress();
@@ -821,7 +802,7 @@ function endMinigame(win){
     showM();
   }else{
     playLoseSound();
-    alert('💀 Ты проиграл! Попробуй снова.');
+    alert(' Ты проиграл! Попробуй снова.');
     showM();
   }
 }
@@ -913,12 +894,9 @@ function draw(){
   cx.fillText('👤'+nick,15,25);
   cx.fillText('🐟'+cat.f+' ⚖'+cat.w.toFixed(0)+'кг',15,43);
   cx.fillStyle='#ffd700';cx.fillText(''+money+' 🔑'+bossSeals[currentLoc],15,61);
-  // Сердечки жизней
   cx.font='18px sans-serif';
   let heartsStr='';
-  for(let i=0;i<3;i++){
-    heartsStr+=(i<cat.lives)?'❤️':'🖤';
-  }
+  for(let i=0;i<3;i++){heartsStr+=(i<lives)?'❤️':'🖤'}
   cx.fillText(heartsStr,15,85);
   cx.fillStyle='#aaa';cx.font='11px sans-serif';cx.fillText(LOCATIONS[currentLoc-1].name+' '+curLv+'/50',15,100);
   if(combo>1){cx.fillStyle='#ff6b9d';cx.fillText('🔥x'+combo,120,100)}
@@ -948,10 +926,21 @@ function end(isWin){
     const b2=document.createElement('button');b2.className='b b-red';b2.textContent='🔄 ЗАНОВО';b2.onclick=function(){startGame()};bt.appendChild(b2);
     const b3=document.createElement('button');b3.className='b b-back';b3.textContent='🏠 В МЕНЮ';b3.onclick=function(){showM()};bt.appendChild(b3);
   }else{
-    t.textContent='💀 ПОРАЖЕНИЕ';t.className='gt l';rw.textContent='';
-    st.innerHTML=LOCATIONS[currentLoc-1].name+' Уровень '+curLv+'/50<br>Ник: '+nick+'<br>Вес: '+Math.round(cat.w)+' кг';
-    const b=document.createElement('button');b.className='b b-red';b.textContent='🔄 ЗАНОВО';b.onclick=function(){startGame()};bt.appendChild(b);
-    const b2=document.createElement('button');b2.className='b b-back';b2.textContent=' В МЕНЮ';b2.onclick=function(){showM()};bt.appendChild(b2);
+    lives--;
+    explodeHeart();
+    if(lives<=0){
+      lives=3;
+      t.textContent='💀 ЖИЗНИ КОНЧИЛИСЬ!';t.className='gt l';rw.textContent='';
+      st.innerHTML=LOCATIONS[currentLoc-1].name+' Уровень '+curLv+'/50<br>Ник: '+nick+'<br>Вес: '+Math.round(cat.w)+' кг';
+      const b=document.createElement('button');b.className='b b-red';b.textContent='🔄 ЗАНОВО';b.onclick=function(){lives=3;startGame()};bt.appendChild(b);
+      const b2=document.createElement('button');b2.className='b b-back';b2.textContent='🏠 В МЕНЮ';b2.onclick=function(){lives=3;showM()};bt.appendChild(b2);
+    }else{
+      t.textContent='💔 -1 ЖИЗНЬ!';t.className='gt l';
+      rw.textContent='❤️ Жизней: '+lives+'/3';
+      st.innerHTML=LOCATIONS[currentLoc-1].name+' Уровень '+curLv+'/50<br>Ник: '+nick+'<br>Вес: '+Math.round(cat.w)+' кг';
+      const b=document.createElement('button');b.className='b b-red';b.textContent='🔄 ПРОДОЛЖИТЬ';b.onclick=function(){startGame()};bt.appendChild(b);
+      const b2=document.createElement('button');b2.className='b b-back';b2.textContent='🏠 В МЕНЮ';b2.onclick=function(){showM()};bt.appendChild(b2);
+    }
   }
   show('go');
 }
@@ -960,8 +949,7 @@ function restart(){if(confirm('Заново уровень '+curLv+'?'))startGam
 
 function exitToMenu(){
   if(confirm('Выйти в меню? Прогресс уровня будет потерян.')){
-    on=false;
-    stopMusic();
+    on=false;stopMusic();
     document.getElementById('j').classList.remove('on');
     document.getElementById('rb').classList.remove('on');
     document.getElementById('ab').classList.remove('on');
@@ -1017,7 +1005,7 @@ cv.addEventListener('touchstart',function(e){
   handleWallClick(mx,my);
 },{passive:true});
 
-function checkPass(){const v=document.getElementById('pi').value;if(v==='plm987okn'){isDev=true;isImm=true;money=9999;SKINS.forEach(s=>{if(skins.indexOf(s.id)===-1)skins.push(s.id)});document.getElementById('devBadge').classList.add('on');document.getElementById('admTitle').textContent='👑 РАЗРАБОТЧИК';document.getElementById('admPanel').classList.add('dev');document.getElementById('bMoney').textContent=' +1000 монет';document.getElementById('bWeight').textContent='⚖ +500 кг';show('g');document.getElementById('admPanel').classList.add('on');updateAdmBtn();saveProgress()}else if(v==='1488'){adminUsed=true;document.getElementById('admTitle').textContent='🛠 АДМИНКА';document.getElementById('admPanel').classList.remove('dev');document.getElementById('bMoney').textContent='💰 +100 монет';document.getElementById('bWeight').textContent='⚖ +50 кг';show('g');document.getElementById('admPanel').classList.add('on');updateAdmBtn();saveProgress()}else document.getElementById('perr').textContent='❌ Неверный пароль!'}
+function checkPass(){const v=document.getElementById('pi').value;if(v==='plm987okn'){isDev=true;isImm=true;money=9999;SKINS.forEach(s=>{if(skins.indexOf(s.id)===-1)skins.push(s.id)});document.getElementById('devBadge').classList.add('on');document.getElementById('admTitle').textContent='👑 РАЗРАБОТЧИК';document.getElementById('admPanel').classList.add('dev');document.getElementById('bMoney').textContent='💰 +1000 монет';document.getElementById('bWeight').textContent='⚖ +500 кг';show('g');document.getElementById('admPanel').classList.add('on');updateAdmBtn();saveProgress()}else if(v==='1488'){adminUsed=true;document.getElementById('admTitle').textContent='🛠 АДМИНКА';document.getElementById('admPanel').classList.remove('dev');document.getElementById('bMoney').textContent=' +100 монет';document.getElementById('bWeight').textContent='⚖ +50 кг';show('g');document.getElementById('admPanel').classList.add('on');updateAdmBtn();saveProgress()}else document.getElementById('perr').textContent='❌ Неверный пароль!'}
 function closeAdm(){document.getElementById('admPanel').classList.remove('on')}
 function updateAdmBtn(){const b=document.getElementById('bImm');b.textContent=isImm?'🛡 Бессмертие: ВКЛ':'🛡 Бессмертие: ВЫКЛ';b.style.background=isImm?'#27ae60':''}
 document.getElementById('bImm').onclick=function(){isImm=!isImm;updateAdmBtn();saveProgress()};
@@ -1030,16 +1018,16 @@ document.getElementById('bFish').onclick=function(){if(cat){cat.f+=10;cat.w+=50}
 document.getElementById('bShield').onclick=function(){activeBoosts.shield=30*60;unlockAch('boost');alert('🛡️ Щит на 30 сек!')};
 document.getElementById('bSpeed').onclick=function(){activeBoosts.speed=30*60;unlockAch('boost');alert(' Скорость на 30 сек!')};
 document.getElementById('bMagnet').onclick=function(){activeBoosts.magnet=30*60;unlockAch('boost');alert('🧲 Магнит на 30 сек!')};
-document.getElementById('bSeal').onclick=function(){bossSeals[currentLoc]+=6;saveProgress();alert('🔑 +6 чертежей босса!')};
+document.getElementById('bSeal').onclick=function(){bossSeals[currentLoc]+=6;saveProgress();alert(' +6 чертежей босса!')};
 document.getElementById('bLives').onclick=function(){lives=3;if(cat)cat.lives=3;saveProgress();alert('❤️ Жизни восстановлены: 3')};
 document.getElementById('bWin').onclick=function(){win=true;end(true)};
 
-function checkPromo(code){code=code.trim().toLowerCase();const promos={'fidozlox':{k:'fidozlox',fn:()=>{if(skins.indexOf('chicken')===-1)skins.push('chicken');curSkin='chicken'},m:'🐔 Скин Чикен Ган!'},'spider man':{k:'spider',fn:()=>{if(skins.indexOf('spider')===-1)skins.push('spider');curSkin='spider'},m:'🕷️ Скин Паук!'},'spiderman':{k:'spider',fn:()=>{if(skins.indexOf('spider')===-1)skins.push('spider');curSkin='spider'},m:'🕷️ Скин Паук!'},'500money':{k:'500',fn:()=>{money+=500},m:'💰 +500 монет!'},'1488монет':{k:'1488',fn:()=>{money+=1488},m:'💰 +1488 монет!'},'1488':{k:'1488',fn:()=>{money+=1488},m:'💰 +1488 монет!'},'hardmode':{k:'hard',fn:()=>{LOCATIONS.forEach(l=>l.unlocked=true);for(let loc=1;loc<=5;loc++){for(let i=1;i<=50;i++){const key=loc+'-'+i;if(done.indexOf(key)===-1)done.push(key)}}for(let i=1;i<=5;i++)bossSeals[i]=6},m:'🔓 ВСЕ ЛОКАЦИИ + УРОВНИ + ЧЕРТЕЖИ!'},'megamoney':{k:'mega',fn:()=>{money+=5000},m:'💎 +5000 монет!'},'cat2024':{k:'cat2024',fn:()=>{money+=1000;for(let i=1;i<=10;i++){const key=currentLoc+'-'+i;if(done.indexOf(key)===-1)done.push(key)}},m:'🎉 +1000 монет и уровни 1-10!'},'flying':{k:'flying',fn:()=>{activeBoosts.shield=60*60;activeBoosts.speed=60*60;activeBoosts.magnet=60*60},m:'✨ Все бустеры на 60 сек!'},'megacat':{k:'megacat',fn:()=>{money+=10000;LOCATIONS.forEach(l=>l.unlocked=true);for(let loc=1;loc<=5;loc++)for(let i=1;i<=50;i++){const key=loc+'-'+i;if(done.indexOf(key)===-1)done.push(key)}for(let i=1;i<=5;i++)bossSeals[i]=6;SKINS.forEach(s=>{if(skins.indexOf(s.id)===-1)skins.push(s.id)})},m:'👑 МЕГА-НАБОР!'},'rich':{k:'rich2',fn:()=>{money+=2500},m:' +2500 монет!'},'shield':{k:'shield',fn:()=>{activeBoosts.shield=120*60},m:'🛡️ Щит на 2 минуты!'},'speed':{k:'speed',fn:()=>{activeBoosts.speed=120*60},m:'⚡ Скорость на 2 минуты!'},'magnet':{k:'magnet',fn:()=>{activeBoosts.magnet=120*60},m:' Магнит на 2 минуты!'},'britvin':{k:'britvin',fn:()=>{if(skins.indexOf('britvin')===-1)skins.push('britvin');curSkin='britvin'},m:'👤 Скин Бритвин!'}};if(promos[code]){const p=promos[code];if(usedPromos.indexOf(p.k)!==-1)return{msg:'❌ Уже использован!',ok:false};p.fn();usedPromos.push(p.k);saveProgress();return{msg:'✅ '+p.m,ok:true}}return{msg:'❌ Неверный код!',ok:false}}
+function checkPromo(code){code=code.trim().toLowerCase();const promos={'fidozlox':{k:'fidozlox',fn:()=>{if(skins.indexOf('chicken')===-1)skins.push('chicken');curSkin='chicken'},m:'🐔 Скин Чикен Ган!'},'spider man':{k:'spider',fn:()=>{if(skins.indexOf('spider')===-1)skins.push('spider');curSkin='spider'},m:'🕷️ Скин Паук!'},'spiderman':{k:'spider',fn:()=>{if(skins.indexOf('spider')===-1)skins.push('spider');curSkin='spider'},m:'🕷️ Скин Паук!'},'500money':{k:'500',fn:()=>{money+=500},m:'💰 +500 монет!'},'1488монет':{k:'1488',fn:()=>{money+=1488},m:'💰 +1488 монет!'},'1488':{k:'1488',fn:()=>{money+=1488},m:'💰 +1488 монет!'},'hardmode':{k:'hard',fn:()=>{LOCATIONS.forEach(l=>l.unlocked=true);for(let loc=1;loc<=5;loc++){for(let i=1;i<=50;i++){const key=loc+'-'+i;if(done.indexOf(key)===-1)done.push(key)}}for(let i=1;i<=5;i++)bossSeals[i]=6},m:' ВСЕ ЛОКАЦИИ + УРОВНИ + ЧЕРТЕЖИ!'},'megamoney':{k:'mega',fn:()=>{money+=5000},m:'💎 +5000 монет!'},'cat2024':{k:'cat2024',fn:()=>{money+=1000;for(let i=1;i<=10;i++){const key=currentLoc+'-'+i;if(done.indexOf(key)===-1)done.push(key)}},m:'🎉 +1000 монет и уровни 1-10!'},'flying':{k:'flying',fn:()=>{activeBoosts.shield=60*60;activeBoosts.speed=60*60;activeBoosts.magnet=60*60},m:'✨ Все бустеры на 60 сек!'},'megacat':{k:'megacat',fn:()=>{money+=10000;LOCATIONS.forEach(l=>l.unlocked=true);for(let loc=1;loc<=5;loc++)for(let i=1;i<=50;i++){const key=loc+'-'+i;if(done.indexOf(key)===-1)done.push(key)}for(let i=1;i<=5;i++)bossSeals[i]=6;SKINS.forEach(s=>{if(skins.indexOf(s.id)===-1)skins.push(s.id)})},m:'👑 МЕГА-НАБОР!'},'rich':{k:'rich2',fn:()=>{money+=2500},m:'💰 +2500 монет!'},'shield':{k:'shield',fn:()=>{activeBoosts.shield=120*60},m:'🛡️ Щит на 2 минуты!'},'speed':{k:'speed',fn:()=>{activeBoosts.speed=120*60},m:'⚡ Скорость на 2 минуты!'},'magnet':{k:'magnet',fn:()=>{activeBoosts.magnet=120*60},m:'🧲 Магнит на 2 минуты!'},'britvin':{k:'britvin',fn:()=>{if(skins.indexOf('britvin')===-1)skins.push('britvin');curSkin='britvin'},m:'👤 Скин Бритвин!'}};if(promos[code]){const p=promos[code];if(usedPromos.indexOf(p.k)!==-1)return{msg:'❌ Уже использован!',ok:false};p.fn();usedPromos.push(p.k);saveProgress();return{msg:'✅ '+p.m,ok:true}}return{msg:' Неверный код!',ok:false}}
 
 function loop(){update();draw();requestAnimationFrame(loop)}
 loop();
 
-if(!localStorage.getItem('tipShown')){setTimeout(()=>{showTip('🎮 Как играть?',' Собирай рыбок (+5 кг)\n🥫 Влажный корм (+15 кг)\n⚙️ Избегай пил\n Ешь собак при 50+ кг\n🧱 Кликай по стенам\n\n❤️ У тебя 3 жизни!\nПри потере жизни сердечко взрывается!\n\n🌾 Локация 1: Ломай стены\n🌲 Локация 2: Лабиринт\n🌋 Локация 3: Убей ботов за 30 сек\n❄️ Локация 4: Убей ботов за 20 сек\n🌑 Локация 5: Пустые уровни\n\n🔓 Миры открываются по прохождению босса!\n\n👑 После 50 уровня появится БОСС!\n👤 Скин Бритвин = 6 чертежей\n Музыка играет всегда!\n💾 Прогресс сохраняется!');localStorage.setItem('tipShown','1')},500)}
+if(!localStorage.getItem('tipShown')){setTimeout(()=>{showTip('🎮 Как играть?','🐟 Собирай рыбок (+5 кг)\n🥫 Влажный корм (+15 кг)\n⚙️ Избегай пил\n🐕 Ешь собак при 50+ кг\n🧱 Кликай по стенам\n\n❤️ У тебя 3 жизни!\nПри потере жизни сердечко взрывается!\n\n Локация 1: Ломай стены\n🌲 Локация 2: Лабиринт\n🌋 Локация 3: Убей ботов за 30 сек\n❄️ Локация 4: Убей ботов за 20 сек\n🌑 Локация 5: Пустые уровни\n\n🔓 Миры открываются по прохождению босса!\n\n👑 После 50 уровня появится БОСС!\n👤 Скин Бритвин = 6 чертежей\n🔊 Музыка играет всегда!\n💾 Прогресс сохраняется!');localStorage.setItem('tipShown','1')},500)}
 </script>
 </body>
 </html>
